@@ -55,7 +55,7 @@ AddEventHandler('RequestScaleformCallbackString', function(scaleformName,Sfuncti
     end 
     BeginScaleformMovieMethod(Scaleforms.Handles[scaleformName],SfunctionName) --call function
     local ops = {...}
-    cb = ops[#ops]
+    local cb = ops[#ops]
     table.remove(ops,#ops)
     SendScaleformValues(...)
     local b = EndScaleformMovieMethodReturnValue()
@@ -83,7 +83,7 @@ AddEventHandler('RequestScaleformCallbackInt', function(scaleformName,SfunctionN
     end 
     BeginScaleformMovieMethod(Scaleforms.Handles[scaleformName],SfunctionName) --call function
     local ops = {...}
-    cb = ops[#ops]
+    local cb = ops[#ops]
     table.remove(ops,#ops)
     SendScaleformValues(...)
     local b = EndScaleformMovieMethodReturnValue()
@@ -111,7 +111,7 @@ AddEventHandler('RequestScaleformCallbackBool', function(scaleformName,Sfunction
     end 
     BeginScaleformMovieMethod(Scaleforms.Handles[scaleformName],SfunctionName) --call function
     local ops = {...}
-    cb = ops[#ops]
+    local cb = ops[#ops]
     table.remove(ops,#ops)
     SendScaleformValues(...)
     local b = EndScaleformMovieMethodReturnValue()
@@ -292,6 +292,48 @@ AddEventHandler('KillScaleformMovie', function(scaleformName)
         Scaleforms.Kill[scaleformName] = true
     end 
 end)
+RegisterNetEvent('DrawScaleformMovieDuration')
+AddEventHandler('DrawScaleformMovieDuration', function(scaleformName,duration,...)
+    local ops = {...}
+    local cb = ops[#ops]
+    table.remove(ops,#ops)
+    CreateThread(function()
+        TriggerEvent('DrawScaleformMovie',scaleformName,table.unpack(ops))
+        Citizen.SetTimeout(duration,function()
+        TriggerEvent('KillScaleformMovie',scaleformName);
+        cb()
+        end)
+    end)
+end)
+RegisterNetEvent('DrawScaleformMoviePositionDuration')
+AddEventHandler('DrawScaleformMoviePositionDuration', function(scaleformName,duration,...)
+    local ops = {...}
+    local cb = ops[#ops]
+    table.remove(ops,#ops)
+    CreateThread(function()
+        TriggerEvent('DrawScaleformMoviePosition',scaleformName,table.unpack(ops))
+        Citizen.SetTimeout(duration,function()
+        TriggerEvent('KillScaleformMovie',scaleformName);
+        cb()
+        end)
+    end)
+end)
+RegisterNetEvent('DrawScaleformMoviePosition2Duration')
+AddEventHandler('DrawScaleformMoviePosition2Duration', function(scaleformName,duration,...)
+    local ops = {...}
+    local cb = ops[#ops]
+    
+    table.remove(ops,#ops)
+    CreateThread(function()
+        TriggerEvent('DrawScaleformMoviePosition2',scaleformName,table.unpack(ops))
+        Citizen.SetTimeout(duration,function()
+        TriggerEvent('KillScaleformMovie',scaleformName);
+        cb()
+        end)
+    end)
+end)
+
+
 --[==[
 Citizen.CreateThread(function()
     TriggerEvent('CallScaleformMovie','instructional_buttons',function(run,send,stop,handle)
