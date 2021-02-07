@@ -19,11 +19,14 @@ start scaleforms
 
 [EVENTS]
 ```
-    CallScaleformMovie
-    DrawScaleformMovie
-    DrawScaleformMoviePosition
-    DrawScaleformMoviePosition2
-    EndScaleformMovie
+    CallScaleformMovie (scaleformName,cb)  cb -> (starterfunc,sendfunc,senderendfunc,scaleformhandle)
+    DrawScaleformMovie (scaleformName) or (scaleformName,x,y,width,height)
+    DrawScaleformMoviePosition just like DrawScaleformMovie_3d
+    DrawScaleformMoviePosition2 just like DrawScaleformMovie_3dSolid
+    EndScaleformMovie (scaleformName) 
+    
+    
+    TriggerEvent('EndScaleformMovie','instructional_buttons')
     
 ```
 
