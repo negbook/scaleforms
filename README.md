@@ -10,6 +10,7 @@ Scaleforms utilities for FXServer
 
 
 [INSTALLATION] 
+
 add this line to your server.cfg
 
 ```
