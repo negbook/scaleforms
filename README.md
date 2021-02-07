@@ -27,7 +27,7 @@ start scaleforms
     DrawScaleformMovieDuration -- same of above but kill after milliseconds and cb
     DrawScaleformMoviePositionDuration -- same of above but kill after milliseconds and cb
     DrawScaleformMoviePosition2Duration -- same of above but kill after milliseconds and cb
-    TriggerEvent('EndScaleformMovie','instructional_buttons')
+    
     
 ```
 
