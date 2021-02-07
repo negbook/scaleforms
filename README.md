@@ -99,7 +99,7 @@ Citizen.CreateThread(function()
             --]]
             TriggerEvent('DrawScaleformMoviePosition2Duration','mp_car_stats_02',5000,x,y+1.0,z+3.0,0.0,0.0,0.0,1.0, 1.0, 1.0, 5.0, 5.0, 5.0, 1,function()
                     TriggerEvent('EndScaleformMovie','mp_car_stats_01')
-                    TriggerEvent('EndScaleformMovie','mp_car_stats_02')
+                    --TriggerEvent('EndScaleformMovie','mp_car_stats_02')
             end)
 
     end )
