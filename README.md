@@ -2,19 +2,27 @@
 Scaleforms utilities for FXServer
 
 
+
 [DEPENDENCIES]
 [Threads](https://forum.cfx.re/t/lib-threads-good-for-loops/2089076)
 
 
 
 [INSTALLATION] 
-
-Set it as a dependency in you fxmanifest.lua
-make sure fx_version up to 'adamant' version
+add this line to your server.cfg
 
 ```
-client_script '@threads/threads.lua'
-client_script '@scaleforms/scaleforms.lua'
+start scaleforms
+```
+
+[EVENTS]
+```
+    CallScaleformMovie
+    DrawScaleformMovie
+    DrawScaleformMoviePosition
+    DrawScaleformMoviePosition2
+    EndScaleformMovie
+    
 ```
 
 
