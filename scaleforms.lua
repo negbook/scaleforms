@@ -9,12 +9,12 @@ SendScaleformValues = function (...)
     for i=1,#tb do
         if type(tb[i]) == "number" then 
             if math.type(tb[i]) == "integer" then
-                    PushScaleformMovieFunctionParameterInt(tb[i])
+                    ScaleformMovieMethodAddParamInt(tb[i])
             else
-                    PushScaleformMovieFunctionParameterFloat(tb[i])
+                    ScaleformMovieMethodAddParamFloat(tb[i])
             end
-        elseif type(tb[i]) == "string" then PushScaleformMovieFunctionParameterString(tb[i])
-        elseif type(tb[i]) == "boolean" then PushScaleformMovieFunctionParameterBool(tb[i])
+        elseif type(tb[i]) == "string" then ScaleformMovieMethodAddParamTextureNameString(tb[i])
+        elseif type(tb[i]) == "boolean" then ScaleformMovieMethodAddParamBool(tb[i])
         end
     end 
 end
@@ -170,6 +170,7 @@ AddEventHandler('DrawScaleformMovie', function(scaleformName,...)
                     Scaleforms.Kill[scaleformName] = nil
                     Scaleforms.counts = Scaleforms.counts - 1
                     SetScaleformMovieAsNoLongerNeeded(Scaleforms.Handles[scaleformName])
+                    Scaleforms.temp_tasks[scaleformName] = nil
                 elseif Scaleforms.Handles[scaleformName] then 
                     DrawScaleformMovie(Scaleforms.Handles[scaleformName], table.unpack(ops))
                 end 
@@ -303,6 +304,7 @@ AddEventHandler('DrawScaleformMoviePosition2', function(scaleformName,...)
                     Scaleforms.Kill[scaleformName] = nil
                     Scaleforms.counts = Scaleforms.counts - 1
                     SetScaleformMovieAsNoLongerNeeded(Scaleforms.Handles[scaleformName])
+                    Scaleforms.temp_tasks[scaleformName] = nil
                 elseif Scaleforms.Handles[scaleformName] then 
                     DrawScaleformMovie_3dSolid(Scaleforms.Handles[scaleformName], table.unpack(ops))
                 end 
