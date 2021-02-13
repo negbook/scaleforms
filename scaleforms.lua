@@ -1,5 +1,5 @@
 
-local localutil = false 
+local IsUtilForLocalScript = false 
 
 Scaleforms = {}
 Scaleforms.temp_tasks = {}
@@ -351,7 +351,7 @@ Scaleforms.DrawScaleformMoviePosition2Duration = function (scaleformName,duratio
     end)
 end 
 
-if not localutil then 
+if not IsUtilForLocalScript then 
 RegisterNetEvent('CallScaleformMovie')
 RegisterNetEvent('RequestScaleformCallbackString')
 RegisterNetEvent('RequestScaleformCallbackInt')
