@@ -1,8 +1,14 @@
+
+local localutil = true 
+
 Scaleforms = {}
 Scaleforms.temp_tasks = {}
 Scaleforms.Tasks = {}
 Scaleforms.Handles = {}
 Scaleforms.Kill = {}
+
+
+
 SendScaleformValues = function (...)
     local tb = {...}
     for i=1,#tb do
@@ -17,7 +23,7 @@ SendScaleformValues = function (...)
         end
     end 
 end
-RegisterNetEvent('CallScaleformMovie')
+
 --[=[
 --  TriggerEvent('CallScaleformMovie','TALK_MESSAGE',function(run,send,stop)  -- or function(run,send,stop,handle)
             run('SayToAll')
@@ -40,10 +46,8 @@ Scaleforms.CallScaleformMovie = function (scaleformName,cb)
     local inputfunction = function(sfunc) PushScaleformMovieFunction(Scaleforms.Handles[scaleformName],sfunc) end
     cb(inputfunction,SendScaleformValues,PopScaleformMovieFunctionVoid,Scaleforms.Handles[scaleformName])
 end
-AddEventHandler('CallScaleformMovie', function(scaleformName,cb) 
-    Scaleforms.CallScaleformMovie(scaleformName,cb) 
-end)
-RegisterNetEvent('RequestScaleformCallbackString')
+
+
 Scaleforms.RequestScaleformCallbackString = function (scaleformName,SfunctionName,...) 
     if not Scaleforms.Handles[scaleformName] or not HasScaleformMovieLoaded(Scaleforms.Handles[scaleformName]) then 
         Scaleforms.Handles[scaleformName] = RequestScaleformMovie(scaleformName)
@@ -71,10 +75,8 @@ Scaleforms.RequestScaleformCallbackString = function (scaleformName,SfunctionNam
     Citizen.Wait(0)
     end
 end 
-AddEventHandler('RequestScaleformCallbackString', function(scaleformName,SfunctionName,...) 
-    RequestScaleformCallbackString(scaleformName,SfunctionName,...) 
-end)
-RegisterNetEvent('RequestScaleformCallbackInt')
+
+
 Scaleforms.RequestScaleformCallbackInt = function(scaleformName,SfunctionName,...) 
     if not Scaleforms.Handles[scaleformName] or not HasScaleformMovieLoaded(Scaleforms.Handles[scaleformName]) then 
         Scaleforms.Handles[scaleformName] = RequestScaleformMovie(scaleformName)
@@ -102,10 +104,8 @@ Scaleforms.RequestScaleformCallbackInt = function(scaleformName,SfunctionName,..
     Citizen.Wait(0)
     end
 end 
-AddEventHandler('RequestScaleformCallbackInt', function(scaleformName,SfunctionName,...) 
-    Scaleforms.RequestScaleformCallbackInt(scaleformName,SfunctionName,...) 
-end)
-RegisterNetEvent('RequestScaleformCallbackBool')
+
+
 Scaleforms.RequestScaleformCallbackBool = function(scaleformName,SfunctionName,...) 
     if not Scaleforms.Handles[scaleformName] or not HasScaleformMovieLoaded(Scaleforms.Handles[scaleformName]) then 
         Scaleforms.Handles[scaleformName] = RequestScaleformMovie(scaleformName)
@@ -133,10 +133,8 @@ Scaleforms.RequestScaleformCallbackBool = function(scaleformName,SfunctionName,.
     Citizen.Wait(0)
     end
 end 
-AddEventHandler('RequestScaleformCallbackBool', function(scaleformName,SfunctionName,...) 
-    Scaleforms.RequestScaleformCallbackBool(scaleformName,SfunctionName,...) 
-end)
-RegisterNetEvent('DrawScaleformMovie')
+
+
 Scaleforms.DrawScaleformMovie = function (scaleformName,...)
     if not Scaleforms.Handles[scaleformName] or not HasScaleformMovieLoaded(Scaleforms.Handles[scaleformName]) then 
         Scaleforms.Handles[scaleformName] = RequestScaleformMovie(scaleformName)
@@ -204,11 +202,8 @@ Scaleforms.DrawScaleformMovie = function (scaleformName,...)
         end 
     end 
 end 
-AddEventHandler('DrawScaleformMovie', function(scaleformName,...)
-    Scaleforms.DrawScaleformMovie(scaleformName,...)
-    
-end)
-RegisterNetEvent('DrawScaleformMoviePosition')
+
+
 Scaleforms.DrawScaleformMoviePosition = function (scaleformName,...)
     if not Scaleforms.Handles[scaleformName] or not HasScaleformMovieLoaded(Scaleforms.Handles[scaleformName]) then 
         Scaleforms.Handles[scaleformName] = RequestScaleformMovie(scaleformName)
@@ -251,10 +246,8 @@ Scaleforms.DrawScaleformMoviePosition = function (scaleformName,...)
         end 
     end 
 end 
-AddEventHandler('DrawScaleformMoviePosition', function(scaleformName,...)
-    Scaleforms.DrawScaleformMoviePosition(scaleformName,...)
-end)
-RegisterNetEvent('DrawScaleformMoviePosition2')
+
+
 Scaleforms.DrawScaleformMoviePosition2 = function (scaleformName,...)
     if not Scaleforms.Handles[scaleformName] or not HasScaleformMovieLoaded(Scaleforms.Handles[scaleformName]) then 
         Scaleforms.Handles[scaleformName] = RequestScaleformMovie(scaleformName)
@@ -297,9 +290,7 @@ Scaleforms.DrawScaleformMoviePosition2 = function (scaleformName,...)
         end 
     end 
 end 
-AddEventHandler('DrawScaleformMoviePosition2', function(scaleformName,...)
-    Scaleforms.DrawScaleformMoviePosition2(scaleformName,...)
-end)
+
 
 Scaleforms.EndScaleformMovie = function (scaleformName)
     if not Scaleforms.Handles[scaleformName] then 
@@ -307,23 +298,17 @@ Scaleforms.EndScaleformMovie = function (scaleformName)
         Scaleforms.Kill[scaleformName] = true
     end 
 end 
-RegisterNetEvent('EndScaleformMovie')
-AddEventHandler('EndScaleformMovie', function(scaleformName)
-    Scaleforms.EndScaleformMovie(scaleformName)
-end)
 
-RegisterNetEvent('KillScaleformMovie')
+
+
 Scaleforms.KillScaleformMovie = function(scaleformName)
     if not Scaleforms.Handles[scaleformName] then 
     else 
         Scaleforms.Kill[scaleformName] = true
     end 
 end 
-AddEventHandler('KillScaleformMovie', function(scaleformName)
-    Scaleforms.KillScaleformMovie(scaleformName)
-end)
 
-RegisterNetEvent('DrawScaleformMovieDuration')
+
 Scaleforms.DrawScaleformMovieDuration = function (scaleformName,duration,...)
     local ops = {...}
     local cb = ops[#ops]
@@ -337,11 +322,7 @@ Scaleforms.DrawScaleformMovieDuration = function (scaleformName,duration,...)
     end)
 end 
 
-AddEventHandler('DrawScaleformMovieDuration', function(scaleformName,duration,...)
-    Scaleforms.DrawScaleformMovieDuration(scaleformName,duration,...)
-end)
 
-RegisterNetEvent('DrawScaleformMoviePositionDuration')
 Scaleforms.DrawScaleformMoviePositionDuration = function (scaleformName,duration,...)
      local ops = {...}
     local cb = ops[#ops]
@@ -354,11 +335,8 @@ Scaleforms.DrawScaleformMoviePositionDuration = function (scaleformName,duration
         end)
     end)
 end 
-AddEventHandler('DrawScaleformMoviePositionDuration', function(scaleformName,duration,...)
-   Scaleforms.DrawScaleformMoviePositionDuration(scaleformName,duration,...)
-end)
 
-RegisterNetEvent('DrawScaleformMoviePosition2Duration')
+
 Scaleforms.DrawScaleformMoviePosition2Duration = function (scaleformName,duration,...)
     local ops = {...}
     local cb = ops[#ops]
@@ -372,10 +350,58 @@ Scaleforms.DrawScaleformMoviePosition2Duration = function (scaleformName,duratio
         end)
     end)
 end 
+
+if not localutil then 
+RegisterNetEvent('CallScaleformMovie')
+RegisterNetEvent('RequestScaleformCallbackString')
+RegisterNetEvent('RequestScaleformCallbackInt')
+RegisterNetEvent('RequestScaleformCallbackBool')
+RegisterNetEvent('DrawScaleformMovie')
+RegisterNetEvent('DrawScaleformMoviePosition')
+RegisterNetEvent('DrawScaleformMoviePosition2')
+RegisterNetEvent('EndScaleformMovie')
+RegisterNetEvent('KillScaleformMovie')
+RegisterNetEvent('DrawScaleformMovieDuration')
+RegisterNetEvent('DrawScaleformMoviePositionDuration')
+RegisterNetEvent('DrawScaleformMoviePosition2Duration')
+AddEventHandler('CallScaleformMovie', function(scaleformName,cb) 
+    Scaleforms.CallScaleformMovie(scaleformName,cb) 
+end)
+AddEventHandler('RequestScaleformCallbackString', function(scaleformName,SfunctionName,...) 
+    RequestScaleformCallbackString(scaleformName,SfunctionName,...) 
+end)
+AddEventHandler('RequestScaleformCallbackInt', function(scaleformName,SfunctionName,...) 
+    Scaleforms.RequestScaleformCallbackInt(scaleformName,SfunctionName,...) 
+end)
+AddEventHandler('RequestScaleformCallbackBool', function(scaleformName,SfunctionName,...) 
+    Scaleforms.RequestScaleformCallbackBool(scaleformName,SfunctionName,...) 
+end)
+AddEventHandler('DrawScaleformMovie', function(scaleformName,...)
+    Scaleforms.DrawScaleformMovie(scaleformName,...)
+    
+end)
+AddEventHandler('DrawScaleformMoviePosition', function(scaleformName,...)
+    Scaleforms.DrawScaleformMoviePosition(scaleformName,...)
+end)
+AddEventHandler('DrawScaleformMoviePosition2', function(scaleformName,...)
+    Scaleforms.DrawScaleformMoviePosition2(scaleformName,...)
+end)
+AddEventHandler('EndScaleformMovie', function(scaleformName)
+    Scaleforms.EndScaleformMovie(scaleformName)
+end)
+AddEventHandler('KillScaleformMovie', function(scaleformName)
+    Scaleforms.KillScaleformMovie(scaleformName)
+end)
+AddEventHandler('DrawScaleformMovieDuration', function(scaleformName,duration,...)
+    Scaleforms.DrawScaleformMovieDuration(scaleformName,duration,...)
+end)
+AddEventHandler('DrawScaleformMoviePositionDuration', function(scaleformName,duration,...)
+   Scaleforms.DrawScaleformMoviePositionDuration(scaleformName,duration,...)
+end)
 AddEventHandler('DrawScaleformMoviePosition2Duration', function(scaleformName,duration,...)
     Scaleforms.DrawScaleformMoviePosition2Duration(scaleformName,duration,...)
 end)
-
+end 
 
 --[==[
 Citizen.CreateThread(function()
