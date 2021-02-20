@@ -1,5 +1,5 @@
 
-local IsUtilForLocalScript = false 
+local IsUtilForLocalScript  = false 
 
 Scaleforms = {}
 Scaleforms.temp_tasks = {}
@@ -192,6 +192,7 @@ Scaleforms.DrawScaleformMovie = function (scaleformName,...)
                     Scaleforms.temp_tasks[scaleformName] = nil
                 elseif Scaleforms.Handles[scaleformName] then 
                     DrawScaleformMovieFullscreen(Scaleforms.Handles[scaleformName])
+                    
                 end 
             end
             local task = {}
@@ -296,6 +297,11 @@ Scaleforms.EndScaleformMovie = function (scaleformName)
     if not Scaleforms.Handles[scaleformName] then 
     else 
         Scaleforms.Kill[scaleformName] = true
+        SetScaleformMovieAsNoLongerNeeded(Scaleforms.Handles[scaleformName])
+        Scaleforms.Handles[scaleformName] = nil 
+        Scaleforms.Kill[scaleformName] = nil
+        Scaleforms.counts = Scaleforms.counts - 1
+        Scaleforms.temp_tasks[scaleformName] = nil
     end 
 end 
 
@@ -305,6 +311,11 @@ Scaleforms.KillScaleformMovie = function(scaleformName)
     if not Scaleforms.Handles[scaleformName] then 
     else 
         Scaleforms.Kill[scaleformName] = true
+        SetScaleformMovieAsNoLongerNeeded(Scaleforms.Handles[scaleformName])
+        Scaleforms.Handles[scaleformName] = nil 
+        Scaleforms.Kill[scaleformName] = nil
+        Scaleforms.counts = Scaleforms.counts - 1
+        Scaleforms.temp_tasks[scaleformName] = nil
     end 
 end 
 
@@ -317,7 +328,9 @@ Scaleforms.DrawScaleformMovieDuration = function (scaleformName,duration,...)
         TriggerEvent('DrawScaleformMovie',scaleformName,table.unpack(ops))
         Citizen.SetTimeout(duration,function()
         TriggerEvent('KillScaleformMovie',scaleformName);
-        cb()
+        if type(cb) == 'function' then 
+            cb()
+        end 
         end)
     end)
 end 
@@ -331,7 +344,9 @@ Scaleforms.DrawScaleformMoviePositionDuration = function (scaleformName,duration
         TriggerEvent('DrawScaleformMoviePosition',scaleformName,table.unpack(ops))
         Citizen.SetTimeout(duration,function()
         TriggerEvent('KillScaleformMovie',scaleformName);
-        cb()
+        if type(cb) == 'function' then 
+            cb()
+        end 
         end)
     end)
 end 
@@ -346,12 +361,14 @@ Scaleforms.DrawScaleformMoviePosition2Duration = function (scaleformName,duratio
         TriggerEvent('DrawScaleformMoviePosition2',scaleformName,table.unpack(ops))
         Citizen.SetTimeout(duration,function()
         TriggerEvent('KillScaleformMovie',scaleformName);
-        cb()
+        if type(cb) == 'function' then 
+            cb()
+        end 
         end)
     end)
 end 
 
-if not IsUtilForLocalScript then 
+if not IsUtilForLocalScript  then 
 RegisterNetEvent('CallScaleformMovie')
 RegisterNetEvent('RequestScaleformCallbackString')
 RegisterNetEvent('RequestScaleformCallbackInt')
