@@ -6,7 +6,7 @@ Scaleforms.temp_tasks = {}
 Scaleforms.Tasks = {}
 Scaleforms.Handles = {}
 Scaleforms.Kill = {}
-
+Scaleforms.ReleaseTimer = {}
 
 
 SendScaleformValues = function (...)
@@ -326,11 +326,17 @@ Scaleforms.DrawScaleformMovieDuration = function (scaleformName,duration,...)
     table.remove(ops,#ops)
     CreateThread(function()
         TriggerEvent('DrawScaleformMovie',scaleformName,table.unpack(ops))
-        Citizen.SetTimeout(duration,function()
-        TriggerEvent('KillScaleformMovie',scaleformName);
-        if type(cb) == 'function' then 
-            cb()
-        end 
+        Scaleforms.ReleaseTimer[scaleformName] = GetGameTimer() + duration
+        
+        Threads.CreateLoopOnce("ScaleformDuration"..scaleformName,333,function()
+            if GetGameTimer() >= Scaleforms.ReleaseTimer[scaleformName] then 
+                TriggerEvent('KillScaleformMovie',scaleformName);
+                if type(cb) == 'function' then 
+                    cb()
+                end 
+                
+                Threads.KillLoop("ScaleformDuration"..scaleformName,333);
+            end 
         end)
     end)
 end 
@@ -342,11 +348,17 @@ Scaleforms.DrawScaleformMoviePositionDuration = function (scaleformName,duration
     table.remove(ops,#ops)
     CreateThread(function()
         TriggerEvent('DrawScaleformMoviePosition',scaleformName,table.unpack(ops))
-        Citizen.SetTimeout(duration,function()
-        TriggerEvent('KillScaleformMovie',scaleformName);
-        if type(cb) == 'function' then 
-            cb()
-        end 
+        Scaleforms.ReleaseTimer[scaleformName] = GetGameTimer() + duration
+        
+        Threads.CreateLoopOnce("ScaleformDuration"..scaleformName,333,function()
+            if GetGameTimer() >= Scaleforms.ReleaseTimer[scaleformName] then 
+                TriggerEvent('KillScaleformMovie',scaleformName);
+                if type(cb) == 'function' then 
+                    cb()
+                end 
+                
+                Threads.KillLoop("ScaleformDuration"..scaleformName,333);
+            end 
         end)
     end)
 end 
@@ -359,11 +371,17 @@ Scaleforms.DrawScaleformMoviePosition2Duration = function (scaleformName,duratio
     table.remove(ops,#ops)
     CreateThread(function()
         TriggerEvent('DrawScaleformMoviePosition2',scaleformName,table.unpack(ops))
-        Citizen.SetTimeout(duration,function()
-        TriggerEvent('KillScaleformMovie',scaleformName);
-        if type(cb) == 'function' then 
-            cb()
-        end 
+        Scaleforms.ReleaseTimer[scaleformName] = GetGameTimer() + duration
+        
+        Threads.CreateLoopOnce("ScaleformDuration"..scaleformName,333,function()
+            if GetGameTimer() >= Scaleforms.ReleaseTimer[scaleformName] then 
+                TriggerEvent('KillScaleformMovie',scaleformName);
+                if type(cb) == 'function' then 
+                    cb()
+                end 
+                
+                Threads.KillLoop("ScaleformDuration"..scaleformName,333);
+            end 
         end)
     end)
 end 
