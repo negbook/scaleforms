@@ -330,7 +330,7 @@ Scaleforms.DrawScaleformMovieDuration = function (scaleformName,duration,...)
         
         Threads.CreateLoopOnce("ScaleformDuration"..scaleformName,333,function()
             if GetGameTimer() >= Scaleforms.ReleaseTimer[scaleformName] then 
-                TriggerEvent('KillScaleformMovie',scaleformName);
+                Scaleforms.KillScaleformMovie(scaleformName);
                 if type(cb) == 'function' then 
                     cb()
                 end 
@@ -352,7 +352,7 @@ Scaleforms.DrawScaleformMoviePositionDuration = function (scaleformName,duration
         
         Threads.CreateLoopOnce("ScaleformDuration"..scaleformName,333,function()
             if GetGameTimer() >= Scaleforms.ReleaseTimer[scaleformName] then 
-                TriggerEvent('KillScaleformMovie',scaleformName);
+                Scaleforms.KillScaleformMovie(scaleformName);
                 if type(cb) == 'function' then 
                     cb()
                 end 
@@ -375,7 +375,7 @@ Scaleforms.DrawScaleformMoviePosition2Duration = function (scaleformName,duratio
         
         Threads.CreateLoopOnce("ScaleformDuration"..scaleformName,333,function()
             if GetGameTimer() >= Scaleforms.ReleaseTimer[scaleformName] then 
-                TriggerEvent('KillScaleformMovie',scaleformName);
+                Scaleforms.KillScaleformMovie(scaleformName);
                 if type(cb) == 'function' then 
                     cb()
                 end 
