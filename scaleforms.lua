@@ -1,5 +1,5 @@
 
-local IsUtilForLocalScript  = false 
+local IsUtilForLocalScript  = true 
 
 Scaleforms = {}
 Scaleforms.temp_tasks = {}
@@ -325,7 +325,7 @@ Scaleforms.DrawScaleformMovieDuration = function (scaleformName,duration,...)
     local cb = ops[#ops]
     table.remove(ops,#ops)
     CreateThread(function()
-        TriggerEvent('DrawScaleformMovie',scaleformName,table.unpack(ops))
+        Scaleforms.DrawScaleformMovie(scaleformName,table.unpack(ops))
         Scaleforms.ReleaseTimer[scaleformName] = GetGameTimer() + duration
         
         Threads.CreateLoopOnce("ScaleformDuration"..scaleformName,333,function()
@@ -347,7 +347,7 @@ Scaleforms.DrawScaleformMoviePositionDuration = function (scaleformName,duration
     local cb = ops[#ops]
     table.remove(ops,#ops)
     CreateThread(function()
-        TriggerEvent('DrawScaleformMoviePosition',scaleformName,table.unpack(ops))
+        Scaleforms.DrawScaleformMoviePosition(scaleformName,table.unpack(ops))
         Scaleforms.ReleaseTimer[scaleformName] = GetGameTimer() + duration
         
         Threads.CreateLoopOnce("ScaleformDuration"..scaleformName,333,function()
@@ -370,7 +370,7 @@ Scaleforms.DrawScaleformMoviePosition2Duration = function (scaleformName,duratio
     
     table.remove(ops,#ops)
     CreateThread(function()
-        TriggerEvent('DrawScaleformMoviePosition2',scaleformName,table.unpack(ops))
+        Scaleforms.DrawScaleformMoviePosition2(scaleformName,table.unpack(ops))
         Scaleforms.ReleaseTimer[scaleformName] = GetGameTimer() + duration
         
         Threads.CreateLoopOnce("ScaleformDuration"..scaleformName,333,function()
