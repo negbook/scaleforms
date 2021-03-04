@@ -1,5 +1,5 @@
 
-local IsUtilForLocalScript  = true 
+local IsUtilForLocalScript  = false 
 
 Scaleforms = {}
 Scaleforms.temp_tasks = {}
