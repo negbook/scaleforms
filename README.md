@@ -12,6 +12,7 @@ Scaleforms utilities for FXServer
 [INSTALLATION] 
 
 add this line to your server.cfg
+set IsUtilForLocalScript in scaleform.lua to true if you want to use it as a util or false if you want to call as Events Usage
 
 ```
 start scaleforms
