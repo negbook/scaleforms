@@ -32,7 +32,7 @@ end
     end )
 --]=]
 Scaleforms.CallScaleformMovie = function (scaleformName,cb)
-    if not Scaleforms.Handles[scaleformName] or not HasScaleformMovieLoaded(Scaleforms.Handles[scaleformName]) then 
+    if not Scaleforms.Handles[scaleformName] then 
     Threads.CreateLoad(scaleformName,RequestScaleformMovie,HasScaleformMovieLoaded,function(handle)
         Scaleforms.Handles[scaleformName] = handle
         local count = 0
