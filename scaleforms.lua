@@ -60,9 +60,11 @@ Scaleforms.RequestScaleformCallbackString = function (scaleformName,SfunctionNam
         table.remove(ops,#ops)
         SendScaleformValues(table.unpack(ops))
 
-        Threads.CreateLoad(EndScaleformMovieMethodReturnValue(),GetScaleformMovieMethodReturnValueString,IsScaleformMovieMethodReturnValueReady,function(c)
-            cb(c)
-        end)
+        local b = EndScaleformMovieMethodReturnValue()
+        while not IsScaleformMovieMethodReturnValueReady(b) do 
+            Wait(0)
+        end 
+        cb(GetScaleformMovieMethodReturnValueString(b))
 
     end)
 end 
@@ -82,9 +84,11 @@ Scaleforms.RequestScaleformCallbackInt = function(scaleformName,SfunctionName,..
     local cb = ops[#ops]
     table.remove(ops,#ops)
     SendScaleformValues(table.unpack(ops))
-    Threads.CreateLoad(EndScaleformMovieMethodReturnValue(),GetScaleformMovieMethodReturnValueInt,IsScaleformMovieMethodReturnValueReady,function(c)
-            cb(c)
-    end)
+    local b = EndScaleformMovieMethodReturnValue()
+    while not IsScaleformMovieMethodReturnValueReady(b) do 
+        Wait(0)
+    end 
+    cb(GetScaleformMovieMethodReturnValueInt(b))
 
     end)
 end 
@@ -104,9 +108,12 @@ Scaleforms.RequestScaleformCallbackBool = function(scaleformName,SfunctionName,.
     local cb = ops[#ops]
     table.remove(ops,#ops)
     SendScaleformValues(table.unpack(ops))
-    Threads.CreateLoad(EndScaleformMovieMethodReturnValue(),GetScaleformMovieMethodReturnValueBool,IsScaleformMovieMethodReturnValueReady,function(c)
-            cb(c)
-    end)
+    local b = EndScaleformMovieMethodReturnValue()
+    while not IsScaleformMovieMethodReturnValueReady(b) do 
+        Wait(0)
+    end 
+    cb(GetScaleformMovieMethodReturnValueBool(b))
+    
 
     end)
 end 
