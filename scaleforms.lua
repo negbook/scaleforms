@@ -75,6 +75,7 @@ Scaleforms.RequestScaleformCallbackString = function (scaleformName,SfunctionNam
 end 
 
 
+
 Scaleforms.RequestScaleformCallbackInt = function(scaleformName,SfunctionName,...) 
     if not Scaleforms.Handles[scaleformName] or not HasScaleformMovieLoaded(Scaleforms.Handles[scaleformName]) then 
         Threads.CreateLoad(scaleformName,RequestScaleformMovie,HasScaleformMovieLoaded,function(handle)
@@ -144,10 +145,10 @@ Scaleforms.DrawScaleformMovie = function (scaleformName,...)
     end 
     if Scaleforms.Handles[scaleformName] then 
         local ops = {...}
-        if #ops > 0 then 
+        if #ops > 1 then 
             Threads.CreateLoopOnce('scaleforms',0,function()
                 if Scaleforms.counts == 0 then 
-                    Threads.KillLoop('scaleforms')
+                    Threads.KillActionOfLoop('scaleforms')
                 end 
                 for i = 1,#(Scaleforms.Tasks) do
                     Scaleforms.Tasks[i]()
@@ -160,8 +161,12 @@ Scaleforms.DrawScaleformMovie = function (scaleformName,...)
                     Scaleforms.Kill[scaleformName] = nil
                     Scaleforms.counts = Scaleforms.counts - 1
                     Scaleforms.temp_tasks[scaleformName] = nil
-                elseif Scaleforms.Handles[scaleformName] then 
+                elseif Scaleforms.Handles[scaleformName] then
+                    if #ops > 1 then 
+                    SetScriptGfxDrawOrder(ops[#ops])
+                    end 
                     DrawScaleformMovie(Scaleforms.Handles[scaleformName], table.unpack(ops))
+                    ResetScriptGfxAlign()
                 end 
             end 
             local task = {}
@@ -172,7 +177,7 @@ Scaleforms.DrawScaleformMovie = function (scaleformName,...)
         else 
             Threads.CreateLoopOnce('scaleforms',0,function()
                 if Scaleforms.counts == 0 then 
-                    Threads.KillLoop('scaleforms')
+                    Threads.KillActionOfLoop('scaleforms')
                 end 
                 for i = 1,#(Scaleforms.Tasks) do
                     Scaleforms.Tasks[i]()
@@ -186,7 +191,13 @@ Scaleforms.DrawScaleformMovie = function (scaleformName,...)
                     Scaleforms.counts = Scaleforms.counts - 1
                     Scaleforms.temp_tasks[scaleformName] = nil
                 elseif Scaleforms.Handles[scaleformName] then 
+                    
+                    if #ops == 1 then 
+                    
+                    SetScriptGfxDrawOrder(ops[1])
+                    end 
                     DrawScaleformMovieFullscreen(Scaleforms.Handles[scaleformName])
+                    ResetScriptGfxAlign()
                     
                 end 
             end
@@ -216,7 +227,7 @@ Scaleforms.DrawScaleformMoviePosition = function (scaleformName,...)
         if #ops > 0 then 
             Threads.CreateLoopOnce('scaleforms',0,function()
                 if Scaleforms.counts == 0 then 
-                    Threads.KillLoop('scaleforms')
+                    Threads.KillActionOfLoop('scaleforms')
                 end 
                 for i = 1,#(Scaleforms.Tasks) do
                     Scaleforms.Tasks[i]()
@@ -259,7 +270,7 @@ Scaleforms.DrawScaleformMoviePosition2 = function (scaleformName,...)
         if #ops > 0 then 
             Threads.CreateLoopOnce('scaleforms',0,function()
                 if Scaleforms.counts == 0 then 
-                    Threads.KillLoop('scaleforms')
+                    Threads.KillActionOfLoop('scaleforms')
                 end 
                 for i = 1,#(Scaleforms.Tasks) do
                     Scaleforms.Tasks[i]()
@@ -328,7 +339,7 @@ Scaleforms.DrawScaleformMovieDuration = function (scaleformName,duration,...)
                     cb()
                 end 
                 
-                Threads.KillLoop("ScaleformDuration"..scaleformName,333);
+                Threads.KillActionOfLoop("ScaleformDuration"..scaleformName,333);
             end 
         end)
     end)
@@ -350,7 +361,7 @@ Scaleforms.DrawScaleformMoviePositionDuration = function (scaleformName,duration
                     cb()
                 end 
                 
-                Threads.KillLoop("ScaleformDuration"..scaleformName,333);
+                Threads.KillActionOfLoop("ScaleformDuration"..scaleformName,333);
             end 
         end)
     end)
@@ -373,7 +384,7 @@ Scaleforms.DrawScaleformMoviePosition2Duration = function (scaleformName,duratio
                     cb()
                 end 
                 
-                Threads.KillLoop("ScaleformDuration"..scaleformName,333);
+                Threads.KillActionOfLoop("ScaleformDuration"..scaleformName,333);
             end 
         end)
     end)
@@ -431,50 +442,3 @@ AddEventHandler('DrawScaleformMoviePosition2Duration', function(scaleformName,du
 end)
 end 
 
---[==[
-Citizen.CreateThread(function()
-    TriggerEvent('CallScaleformMovie','instructional_buttons',function(run,send,stop,handle)
-            run('CLEAR_ALL')
-            stop()
-            run('SET_CLEAR_SPACE')
-                send(200)
-            stop()
-            run('SET_DATA_SLOT')
-                send(0,GetControlInstructionalButton(2, 191, true),'this is enter')
-            stop()
-            run('SET_BACKGROUND_COLOUR')
-                send(0,0,0,22)
-            stop()
-            run('SET_BACKGROUND')
-            stop()
-            run('DRAW_INSTRUCTIONAL_BUTTONS')
-            stop()
-            TriggerEvent('DrawScaleformMovie','instructional_buttons',0.5,0.5,0.8,0.8,0)
-    end )
-    TriggerEvent('RequestScaleformCallbackBool','instructional_buttons','isKey','w3s',function(result)
-        CreateThread(function()
-            Wait(3000)
-            TriggerEvent('EndScaleformMovie','instructional_buttons')
-        end)
-    end )
-    local x,y,z = table.unpack(GetEntityCoords(PlayerPedId()))
-    xrot,yrot,zrot = table.unpack(GetEntityRotation(PlayerPedId(), 1))
-    TriggerEvent('CallScaleformMovie','mp_car_stats_01',function(run,send,stop,handle)
-            run('SET_VEHICLE_INFOR_AND_STATS')
-                send("RE-7B","Tracked and Insured","MPCarHUD","Annis","Top Speed","Acceleration","Braking","Traction",68,60,40,70)
-            stop()
-           TriggerEvent('DrawScaleformMoviePosition','mp_car_stats_01',x,y,z+4.0,xrot,180.0,zrot,2.0, 2.0, 1.0, 5.0, 4.0, 5.0, 2)
-            TriggerEvent('CallScaleformMovie','mp_car_stats_02',function(run,send,stop,handle)
-                run('SET_VEHICLE_INFOR_AND_STATS')
-                send("RE-7B","Tracked and Insured","MPCarHUD","Annis","Top Speed","Acceleration","Braking","Traction",68,60,40,70)
-            stop()
-            TriggerEvent('DrawScaleformMoviePosition2','mp_car_stats_02',x,y+1.0,z+3.0,0.0,0.0,0.0,1.0, 1.0, 1.0, 5.0, 5.0, 5.0, 1)
-                CreateThread(function()
-                Wait(5000)
-                TriggerEvent('EndScaleformMovie','mp_car_stats_01')
-                TriggerEvent('EndScaleformMovie','mp_car_stats_02')
-                end)
-            end )
-    end )
-end)
---]==]
