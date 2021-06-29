@@ -10,7 +10,7 @@ Scaleforms.debug = true
 if Scaleforms.debug then 
 CreateThread(function()
     while true do 
-        print("Total:"..Scaleforms.GetScaleformsTotal())
+        print("Total:"..Scaleforms.GetTotal())
         Wait(600000)
     end 
 end)
