@@ -1,10 +1,10 @@
 Scaleforms = {}
-Scaleforms.init = {}
-Scaleforms.init.temp_tasks = {}
-Scaleforms.init.Tasks = {}
-Scaleforms.init.Handles = {}
-Scaleforms.init.Kill = {}
-Scaleforms.init.ReleaseTimer = {}
+Scaleforms.main = {}
+Scaleforms.main.temp_tasks = {}
+Scaleforms.main.Tasks = {}
+Scaleforms.main.Handles = {}
+Scaleforms.main.Kill = {}
+Scaleforms.main.ReleaseTimer = {}
 
 Scaleforms.debug = true 
 if Scaleforms.debug then 
@@ -26,127 +26,127 @@ end
 
 
 exports('CallScaleformMovie', function (scaleformName)
-    if not Scaleforms.init.Handles[scaleformName] or not HasScaleformMovieLoaded(Scaleforms.init.Handles[scaleformName]) then 
+    if not Scaleforms.main.Handles[scaleformName] or not HasScaleformMovieLoaded(Scaleforms.main.Handles[scaleformName]) then 
         Threads.CreateLoad(scaleformName,RequestScaleformMovie,HasScaleformMovieLoaded,function(handle)
-            Scaleforms.init.Handles[scaleformName] = handle
+            Scaleforms.main.Handles[scaleformName] = handle
         end)
         local count = 0
-        for i,v in pairs(Scaleforms.init.Handles) do 
+        for i,v in pairs(Scaleforms.main.Handles) do 
             count = count + 1
         end 
-        Scaleforms.init.counts = count
+        Scaleforms.main.counts = count
     end 
-    return Scaleforms.init.Handles[scaleformName]
+    return Scaleforms.main.Handles[scaleformName]
 end)
 exports('DrawScaleformMovie', function (scaleformName,...)
-    if not Scaleforms.init.Handles[scaleformName] or not HasScaleformMovieLoaded(Scaleforms.init.Handles[scaleformName]) then 
+    if not Scaleforms.main.Handles[scaleformName] or not HasScaleformMovieLoaded(Scaleforms.main.Handles[scaleformName]) then 
         --[=[
         Threads.CreateLoad(scaleformName,RequestScaleformMovie,HasScaleformMovieLoaded,function(handle)
-            Scaleforms.init.Handles[scaleformName] = handle
+            Scaleforms.main.Handles[scaleformName] = handle
         end)
         local count = 0
-        for i,v in pairs(Scaleforms.init.Handles) do 
+        for i,v in pairs(Scaleforms.main.Handles) do 
             count = count + 1
         end 
-        Scaleforms.init.counts = count
+        Scaleforms.main.counts = count
         --]=]
         error('Scaleforms:DrawScaleformMovie error,Please CallScaleformMovie first',2)
         return 
     end 
-    if Scaleforms.init.Handles[scaleformName] then 
+    if Scaleforms.main.Handles[scaleformName] then 
         local ops = {...}
         if #ops > 1 then 
             Threads.CreateLoopOnce('scaleforms:draw',0,function()
-                if Scaleforms.init.counts == 0 then 
+                if Scaleforms.main.counts == 0 then 
                     Threads.KillActionOfLoop('scaleforms')
                 end 
-                for i = 1,#(Scaleforms.init.Tasks) do
-                    Scaleforms.init.Tasks[i]()
+                for i = 1,#(Scaleforms.main.Tasks) do
+                    Scaleforms.main.Tasks[i]()
                 end 
             end)
-            Scaleforms.init.temp_tasks[scaleformName] = function()
-                if Scaleforms.init.Kill[scaleformName] then  
-                    SetScaleformMovieAsNoLongerNeeded(Scaleforms.init.Handles[scaleformName])
-                    Scaleforms.init.Handles[scaleformName] = nil 
-                    Scaleforms.init.Kill[scaleformName] = nil
-                    Scaleforms.init.counts = Scaleforms.init.counts - 1
-                    Scaleforms.init.temp_tasks[scaleformName] = nil
-                elseif Scaleforms.init.Handles[scaleformName] then
+            Scaleforms.main.temp_tasks[scaleformName] = function()
+                if Scaleforms.main.Kill[scaleformName] then  
+                    SetScaleformMovieAsNoLongerNeeded(Scaleforms.main.Handles[scaleformName])
+                    Scaleforms.main.Handles[scaleformName] = nil 
+                    Scaleforms.main.Kill[scaleformName] = nil
+                    Scaleforms.main.counts = Scaleforms.main.counts - 1
+                    Scaleforms.main.temp_tasks[scaleformName] = nil
+                elseif Scaleforms.main.Handles[scaleformName] then
                     if #ops > 1 then 
                     SetScriptGfxDrawOrder(ops[#ops])
                     end 
-                    DrawScaleformMovie(Scaleforms.init.Handles[scaleformName], table.unpack(ops))
+                    DrawScaleformMovie(Scaleforms.main.Handles[scaleformName], table.unpack(ops))
                     ResetScriptGfxAlign()
                 end 
             end 
             local task = {}
-            for i,v in pairs (Scaleforms.init.temp_tasks ) do
+            for i,v in pairs (Scaleforms.main.temp_tasks ) do
                 table.insert(task,v)
             end 
-            Scaleforms.init.Tasks = task
+            Scaleforms.main.Tasks = task
         else 
             Threads.CreateLoopOnce('scaleforms:draw',0,function()
-                if Scaleforms.init.counts == 0 then 
+                if Scaleforms.main.counts == 0 then 
                     Threads.KillActionOfLoop('scaleforms:draw')
                 end 
-                for i = 1,#(Scaleforms.init.Tasks) do
-                    Scaleforms.init.Tasks[i]()
+                for i = 1,#(Scaleforms.main.Tasks) do
+                    Scaleforms.main.Tasks[i]()
                 end 
             end)
-            Scaleforms.init.temp_tasks [scaleformName] = function()
-                if Scaleforms.init.Kill[scaleformName] then  
-                    SetScaleformMovieAsNoLongerNeeded(Scaleforms.init.Handles[scaleformName])
-                    Scaleforms.init.Handles[scaleformName] = nil 
-                    Scaleforms.init.Kill[scaleformName] = nil
-                    Scaleforms.init.counts = Scaleforms.init.counts - 1
-                    Scaleforms.init.temp_tasks[scaleformName] = nil
-                elseif Scaleforms.init.Handles[scaleformName] then 
+            Scaleforms.main.temp_tasks [scaleformName] = function()
+                if Scaleforms.main.Kill[scaleformName] then  
+                    SetScaleformMovieAsNoLongerNeeded(Scaleforms.main.Handles[scaleformName])
+                    Scaleforms.main.Handles[scaleformName] = nil 
+                    Scaleforms.main.Kill[scaleformName] = nil
+                    Scaleforms.main.counts = Scaleforms.main.counts - 1
+                    Scaleforms.main.temp_tasks[scaleformName] = nil
+                elseif Scaleforms.main.Handles[scaleformName] then 
                     
                     if #ops == 1 then 
                     
                     SetScriptGfxDrawOrder(ops[1])
                     end 
-                    DrawScaleformMovieFullscreen(Scaleforms.init.Handles[scaleformName])
+                    DrawScaleformMovieFullscreen(Scaleforms.main.Handles[scaleformName])
                     ResetScriptGfxAlign()
                     
                 end 
             end
             local task = {}
-            for i,v in pairs (Scaleforms.init.temp_tasks ) do
+            for i,v in pairs (Scaleforms.main.temp_tasks ) do
                 table.insert(task,v)
             end 
-            Scaleforms.init.Tasks = task
+            Scaleforms.main.Tasks = task
         end 
     end 
 end )
 
 
 exports('EndScaleformMovie', function (scaleformName)
-    if not Scaleforms.init.Handles[scaleformName] then 
+    if not Scaleforms.main.Handles[scaleformName] then 
     else 
-        Scaleforms.init.Kill[scaleformName] = true
-        SetScaleformMovieAsNoLongerNeeded(Scaleforms.init.Handles[scaleformName])
-        Scaleforms.init.Handles[scaleformName] = nil 
-        Scaleforms.init.Kill[scaleformName] = nil
-        Scaleforms.init.counts = Scaleforms.init.counts - 1
-        Scaleforms.init.temp_tasks[scaleformName] = nil
+        Scaleforms.main.Kill[scaleformName] = true
+        SetScaleformMovieAsNoLongerNeeded(Scaleforms.main.Handles[scaleformName])
+        Scaleforms.main.Handles[scaleformName] = nil 
+        Scaleforms.main.Kill[scaleformName] = nil
+        Scaleforms.main.counts = Scaleforms.main.counts - 1
+        Scaleforms.main.temp_tasks[scaleformName] = nil
     end 
 end )
 
 
 
 exports('RequestScaleformCallbackString', function (scaleformName,SfunctionName,...) 
-    if not Scaleforms.init.Handles[scaleformName] or not HasScaleformMovieLoaded(Scaleforms.init.Handles[scaleformName]) then 
+    if not Scaleforms.main.Handles[scaleformName] or not HasScaleformMovieLoaded(Scaleforms.main.Handles[scaleformName]) then 
         Threads.CreateLoad(scaleformName,RequestScaleformMovie,HasScaleformMovieLoaded,function(handle)
-            Scaleforms.init.Handles[scaleformName] = handle
+            Scaleforms.main.Handles[scaleformName] = handle
         end)
         local count = 0
-        for i,v in pairs(Scaleforms.init.Handles) do 
+        for i,v in pairs(Scaleforms.main.Handles) do 
             count = count + 1
         end 
-        Scaleforms.init.counts = count
+        Scaleforms.main.counts = count
     end 
-    BeginScaleformMovieMethod(Scaleforms.init.Handles[scaleformName],SfunctionName) --call function
+    BeginScaleformMovieMethod(Scaleforms.main.Handles[scaleformName],SfunctionName) --call function
     local ops = {...}
     local cb = ops[#ops]
     table.remove(ops,#ops)
@@ -165,17 +165,17 @@ end )
 
 
 exports('RequestScaleformCallbackInt', function(scaleformName,SfunctionName,...) 
-    if not Scaleforms.init.Handles[scaleformName] or not HasScaleformMovieLoaded(Scaleforms.init.Handles[scaleformName]) then 
+    if not Scaleforms.main.Handles[scaleformName] or not HasScaleformMovieLoaded(Scaleforms.main.Handles[scaleformName]) then 
         Threads.CreateLoad(scaleformName,RequestScaleformMovie,HasScaleformMovieLoaded,function(handle)
-            Scaleforms.init.Handles[scaleformName] = handle
+            Scaleforms.main.Handles[scaleformName] = handle
         end)
         local count = 0
-        for i,v in pairs(Scaleforms.init.Handles) do 
+        for i,v in pairs(Scaleforms.main.Handles) do 
             count = count + 1
         end 
-        Scaleforms.init.counts = count
+        Scaleforms.main.counts = count
     end 
-    BeginScaleformMovieMethod(Scaleforms.init.Handles[scaleformName],SfunctionName) --call function
+    BeginScaleformMovieMethod(Scaleforms.main.Handles[scaleformName],SfunctionName) --call function
     local ops = {...}
     local cb = ops[#ops]
     table.remove(ops,#ops)
@@ -193,17 +193,17 @@ end )
 
 
 exports('RequestScaleformCallbackBool', function(scaleformName,SfunctionName,...) 
-    if not Scaleforms.init.Handles[scaleformName] or not HasScaleformMovieLoaded(Scaleforms.init.Handles[scaleformName]) then 
+    if not Scaleforms.main.Handles[scaleformName] or not HasScaleformMovieLoaded(Scaleforms.main.Handles[scaleformName]) then 
         Threads.CreateLoad(scaleformName,RequestScaleformMovie,HasScaleformMovieLoaded,function(handle)
-            Scaleforms.init.Handles[scaleformName] = handle
+            Scaleforms.main.Handles[scaleformName] = handle
         end)
         local count = 0
-        for i,v in pairs(Scaleforms.init.Handles) do 
+        for i,v in pairs(Scaleforms.main.Handles) do 
             count = count + 1
         end 
-        Scaleforms.init.counts = count
+        Scaleforms.main.counts = count
     end 
-    BeginScaleformMovieMethod(Scaleforms.init.Handles[scaleformName],SfunctionName) --call function
+    BeginScaleformMovieMethod(Scaleforms.main.Handles[scaleformName],SfunctionName) --call function
     local ops = {...}
     local cb = ops[#ops]
     table.remove(ops,#ops)
@@ -224,12 +224,12 @@ exports('DrawScaleformMovieDuration', function (scaleformName,duration,...)
     local cb = ops[#ops]
     table.remove(ops,#ops)
     CreateThread(function()
-        Scaleforms.init.DrawScaleformMovie(scaleformName,table.unpack(ops))
-        Scaleforms.init.ReleaseTimer[scaleformName] = GetGameTimer() + duration
+        Scaleforms.main.DrawScaleformMovie(scaleformName,table.unpack(ops))
+        Scaleforms.main.ReleaseTimer[scaleformName] = GetGameTimer() + duration
         
         Threads.CreateLoopOnce("ScaleformDuration"..scaleformName,333,function()
-            if GetGameTimer() >= Scaleforms.init.ReleaseTimer[scaleformName] then 
-                Scaleforms.init.KillScaleformMovie(scaleformName);
+            if GetGameTimer() >= Scaleforms.main.ReleaseTimer[scaleformName] then 
+                Scaleforms.main.KillScaleformMovie(scaleformName);
                 if type(cb) == 'function' then 
                     cb()
                 end 
@@ -242,6 +242,6 @@ end )
 
 
 exports('GetScaleformsTotal',function()
-    return Scaleforms and Scaleforms.init and Scaleforms.init.counts or 0
+    return Scaleforms and Scaleforms.main and Scaleforms.main.counts or 0
 end)
 
