@@ -4,7 +4,9 @@ games {'gta5'}
 description 'Scaleforms'
 client_scripts {
 '@threads/threads.lua',
-'scaleforms.lua'
+'main.lua',
+'scaleforms.lua',
+'events.lua'
 }
 
 dependencies {
