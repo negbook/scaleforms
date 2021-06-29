@@ -21,12 +21,8 @@ start scaleforms
 ```
     CallScaleformMovie (scaleformName,cb)  cb -> (starterfunc,sendfunc,senderendfunc,scaleformhandle)
     DrawScaleformMovie (scaleformName) or (scaleformName,x,y,width,height)
-    DrawScaleformMoviePosition just like DrawScaleformMovie_3d
-    DrawScaleformMoviePosition2 just like DrawScaleformMovie_3dSolid
     EndScaleformMovie (scaleformName) 
     DrawScaleformMovieDuration -- same of above but kill after milliseconds and cb
-    DrawScaleformMoviePositionDuration -- same of above but kill after milliseconds and cb
-    DrawScaleformMoviePosition2Duration -- same of above but kill after milliseconds and cb
     
     
 ```
@@ -88,19 +84,6 @@ Citizen.CreateThread(function()
                 run('SET_VEHICLE_INFOR_AND_STATS')
                 send("RE-7B","Tracked and Insured","MPCarHUD","Annis","Top Speed","Acceleration","Braking","Traction",68,60,40,70)
             stop()
-            --[[
-            TriggerEvent('DrawScaleformMoviePosition2','mp_car_stats_02',x,y+1.0,z+3.0,0.0,0.0,0.0,1.0, 1.0, 1.0, 5.0, 5.0, 5.0, 1)
-                CreateThread(function()
-                Wait(5000)
-                TriggerEvent('EndScaleformMovie','mp_car_stats_01')
-                TriggerEvent('EndScaleformMovie','mp_car_stats_02')
-                end)
-            end )
-            --]]
-            TriggerEvent('DrawScaleformMoviePosition2Duration','mp_car_stats_02',5000,x,y+1.0,z+3.0,0.0,0.0,0.0,1.0, 1.0, 1.0, 5.0, 5.0, 5.0, 1,function()
-                    TriggerEvent('EndScaleformMovie','mp_car_stats_01')
-                    --TriggerEvent('EndScaleformMovie','mp_car_stats_02')
-            end)
 
     end )
 
