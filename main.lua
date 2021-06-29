@@ -304,20 +304,6 @@ exports('EndScaleformMovie', function (scaleformName)
 end )
 
 
-
-exports('KillScaleformMovie', function(scaleformName)
-    if not Scaleforms.init.Handles[scaleformName] then 
-    else 
-        Scaleforms.init.Kill[scaleformName] = true
-        SetScaleformMovieAsNoLongerNeeded(Scaleforms.init.Handles[scaleformName])
-        Scaleforms.init.Handles[scaleformName] = nil 
-        Scaleforms.init.Kill[scaleformName] = nil
-        Scaleforms.init.counts = Scaleforms.init.counts - 1
-        Scaleforms.init.temp_tasks[scaleformName] = nil
-    end 
-end )
-
-
 exports('DrawScaleformMovieDuration', function (scaleformName,duration,...)
     local ops = {...}
     local cb = ops[#ops]

@@ -25,6 +25,15 @@ Scaleforms.CallScaleformMovie = function(scaleformName,cb)
     local inputfunction = function(sfunc) PushScaleformMovieFunction(handle,sfunc) end
     cb(inputfunction,SendScaleformValues,PopScaleformMovieFunctionVoid,handle)
 end
+Scaleforms.DrawScaleformMovie = function(scaleformName,...)
+    exports.scaleforms:DrawScaleformMovie(scaleformName,...)
+end
+Scaleforms.EndScaleformMovie = function(scaleformName)
+    exports.scaleforms:EndScaleformMovie(scaleformName)
+end
+Scaleforms.KillScaleformMovie = Scaleforms.EndScaleformMovie
+
+
 Scaleforms.RequestScaleformCallbackString = function(scaleformName,SfunctionName,...) 
     exports.scaleforms:RequestScaleformCallbackString(scaleformName,SfunctionName,...) 
 end
@@ -34,20 +43,11 @@ end
 Scaleforms.RequestScaleformCallbackBool = function(scaleformName,SfunctionName,...) 
     exports.scaleforms:RequestScaleformCallbackBool(scaleformName,SfunctionName,...) 
 end
-Scaleforms.DrawScaleformMovie = function(scaleformName,...)
-    exports.scaleforms:DrawScaleformMovie(scaleformName,...)
-end
 Scaleforms.DrawScaleformMoviePosition = function(scaleformName,...)
     exports.scaleforms:DrawScaleformMoviePosition(scaleformName,...)
 end
 Scaleforms.DrawScaleformMoviePosition2 = function(scaleformName,...)
     exports.scaleforms:DrawScaleformMoviePosition2(scaleformName,...)
-end
-Scaleforms.EndScaleformMovie = function(scaleformName)
-    exports.scaleforms:EndScaleformMovie(scaleformName)
-end
-Scaleforms.KillScaleformMovie = function(scaleformName)
-    exports.scaleforms:KillScaleformMovie(scaleformName)
 end
 Scaleforms.DrawScaleformMovieDuration = function(scaleformName,duration,...)
     exports.scaleforms:DrawScaleformMovieDuration(scaleformName,duration,...)
