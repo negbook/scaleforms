@@ -1,6 +1,5 @@
 this = {}
 this.scriptName = "scaleforms"
-
 SendScaleformValues = function (...)
     local tb = {...}
     for i=1,#tb do
@@ -15,11 +14,9 @@ SendScaleformValues = function (...)
         end
     end 
 end
-
 if GetCurrentResourceName() ~= this.scriptName then 
 Scaleforms = {}
 end 
-
 Scaleforms.CallScaleformMovie = function(scaleformName,cb) 
     local handle = exports.scaleforms:CallScaleformMovie(scaleformName) 
     local inputfunction = function(sfunc) PushScaleformMovieFunction(handle,sfunc) end
@@ -28,11 +25,12 @@ end
 Scaleforms.DrawScaleformMovie = function(scaleformName,...)
     exports.scaleforms:DrawScaleformMovie(scaleformName,...)
 end
+Scaleforms.DrawScaleformMovieDuration = function(scaleformName,duration,...)
+    exports.scaleforms:DrawScaleformMovieDuration(scaleformName,duration,...)
+end
 Scaleforms.EndScaleformMovie = function(scaleformName)
     exports.scaleforms:EndScaleformMovie(scaleformName)
-end
-Scaleforms.KillScaleformMovie = Scaleforms.EndScaleformMovie
-
+end; Scaleforms.KillScaleformMovie = Scaleforms.EndScaleformMovie
 Scaleforms.RequestScaleformCallbackString = function(scaleformName,SfunctionName,...) 
     exports.scaleforms:RequestScaleformCallbackString(scaleformName,SfunctionName,...) 
 end
@@ -42,10 +40,6 @@ end
 Scaleforms.RequestScaleformCallbackBool = function(scaleformName,SfunctionName,...) 
     exports.scaleforms:RequestScaleformCallbackBool(scaleformName,SfunctionName,...) 
 end
-Scaleforms.DrawScaleformMovieDuration = function(scaleformName,duration,...)
-    exports.scaleforms:DrawScaleformMovieDuration(scaleformName,duration,...)
-end
-
 Scaleforms.GetScaleformsTotal = function()
     return exports.scaleforms:GetScaleformsTotal()
 end

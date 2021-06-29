@@ -120,6 +120,26 @@ exports('DrawScaleformMovie', function (scaleformName,...)
     end 
 end )
 
+exports('DrawScaleformMovieDuration', function (scaleformName,duration,...)
+    local ops = {...}
+    local cb = ops[#ops]
+    table.remove(ops,#ops)
+    CreateThread(function()
+        Scaleforms.main.DrawScaleformMovie(scaleformName,table.unpack(ops))
+        Scaleforms.main.ReleaseTimer[scaleformName] = GetGameTimer() + duration
+        
+        Threads.CreateLoopOnce("ScaleformDuration"..scaleformName,333,function()
+            if GetGameTimer() >= Scaleforms.main.ReleaseTimer[scaleformName] then 
+                Scaleforms.main.KillScaleformMovie(scaleformName);
+                if type(cb) == 'function' then 
+                    cb()
+                end 
+                
+                Threads.KillActionOfLoop("ScaleformDuration"..scaleformName,333);
+            end 
+        end)
+    end)
+end )
 
 exports('EndScaleformMovie', function (scaleformName)
     if not Scaleforms.main.Handles[scaleformName] then 
@@ -127,7 +147,6 @@ exports('EndScaleformMovie', function (scaleformName)
         Scaleforms.main.Kill[scaleformName] = true
         SetScaleformMovieAsNoLongerNeeded(Scaleforms.main.Handles[scaleformName])
         Scaleforms.main.Handles[scaleformName] = nil 
-        Scaleforms.main.Kill[scaleformName] = nil
         Scaleforms.main.counts = Scaleforms.main.counts - 1
         Scaleforms.main.temp_tasks[scaleformName] = nil
     end 
@@ -217,27 +236,6 @@ exports('RequestScaleformCallbackBool', function(scaleformName,SfunctionName,...
     end 
     Citizen.Wait(0)
     end
-end )
-
-exports('DrawScaleformMovieDuration', function (scaleformName,duration,...)
-    local ops = {...}
-    local cb = ops[#ops]
-    table.remove(ops,#ops)
-    CreateThread(function()
-        Scaleforms.main.DrawScaleformMovie(scaleformName,table.unpack(ops))
-        Scaleforms.main.ReleaseTimer[scaleformName] = GetGameTimer() + duration
-        
-        Threads.CreateLoopOnce("ScaleformDuration"..scaleformName,333,function()
-            if GetGameTimer() >= Scaleforms.main.ReleaseTimer[scaleformName] then 
-                Scaleforms.main.KillScaleformMovie(scaleformName);
-                if type(cb) == 'function' then 
-                    cb()
-                end 
-                
-                Threads.KillActionOfLoop("ScaleformDuration"..scaleformName,333);
-            end 
-        end)
-    end)
 end )
 
 
