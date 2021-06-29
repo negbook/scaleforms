@@ -40,7 +40,7 @@ end
 Scaleforms.RequestScaleformCallbackBool = function(scaleformName,SfunctionName,...) 
     exports.scaleforms:RequestScaleformCallbackBool(scaleformName,SfunctionName,...) 
 end
-Scaleforms.GetScaleformsTotal = function()
-    return exports.scaleforms:GetScaleformsTotal()
+Scaleforms.GetTotal = function()
+    return exports.scaleforms:GetTotal()
 end
 

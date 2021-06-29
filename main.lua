@@ -239,7 +239,7 @@ exports('RequestScaleformCallbackBool', function(scaleformName,SfunctionName,...
 end )
 
 
-exports('GetScaleformsTotal',function()
+exports('GetTotal',function()
     return Scaleforms and Scaleforms.main and Scaleforms.main.counts or 0
 end)
 
