@@ -33,7 +33,6 @@ Scaleforms.EndScaleformMovie = function(scaleformName)
 end
 Scaleforms.KillScaleformMovie = Scaleforms.EndScaleformMovie
 
-
 Scaleforms.RequestScaleformCallbackString = function(scaleformName,SfunctionName,...) 
     exports.scaleforms:RequestScaleformCallbackString(scaleformName,SfunctionName,...) 
 end
@@ -43,21 +42,10 @@ end
 Scaleforms.RequestScaleformCallbackBool = function(scaleformName,SfunctionName,...) 
     exports.scaleforms:RequestScaleformCallbackBool(scaleformName,SfunctionName,...) 
 end
-Scaleforms.DrawScaleformMoviePosition = function(scaleformName,...)
-    exports.scaleforms:DrawScaleformMoviePosition(scaleformName,...)
-end
-Scaleforms.DrawScaleformMoviePosition2 = function(scaleformName,...)
-    exports.scaleforms:DrawScaleformMoviePosition2(scaleformName,...)
-end
 Scaleforms.DrawScaleformMovieDuration = function(scaleformName,duration,...)
     exports.scaleforms:DrawScaleformMovieDuration(scaleformName,duration,...)
 end
-Scaleforms.DrawScaleformMoviePositionDuration = function(scaleformName,duration,...)
-    exports.scaleforms:DrawScaleformMoviePositionDuration(scaleformName,duration,...)
-end
-Scaleforms.DrawScaleformMoviePosition2Duration = function(scaleformName,duration,...)
-    exports.scaleforms:DrawScaleformMoviePosition2Duration(scaleformName,duration,...)
-end
+
 Scaleforms.GetScaleformsTotal = function()
     return exports.scaleforms:GetScaleformsTotal()
 end
