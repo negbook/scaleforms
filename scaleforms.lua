@@ -31,6 +31,9 @@ end
 Scaleforms.EndScaleformMovie = function(scaleformName)
     exports.scaleforms:EndScaleformMovie(scaleformName)
 end; Scaleforms.KillScaleformMovie = Scaleforms.EndScaleformMovie
+Scaleforms.RequestScaleformCallbackAny = function(scaleformName,SfunctionName,...) 
+    exports.scaleforms:RequestScaleformCallbackAny(scaleformName,SfunctionName,...) 
+end
 Scaleforms.RequestScaleformCallbackString = function(scaleformName,SfunctionName,...) 
     exports.scaleforms:RequestScaleformCallbackString(scaleformName,SfunctionName,...) 
 end
