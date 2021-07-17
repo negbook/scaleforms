@@ -30,14 +30,16 @@ AddEventHandler('onResourceStop', function(resourceName)
   --print('The resource ' .. resourceName .. ' was stopped.')
   if resourceName ~= this.scriptName then 
       for i,v in pairs( ThisScriptsScaleforms ) do 
-        print(i,v)
+        --print(i,v)
         Scaleforms.EndScaleformMovie(i)
       end 
   end 
 end)
 
 Scaleforms.CallScaleformMovie = function(scaleformName,cb) 
-    ThisScriptsScaleforms[scaleformName] = true 
+    if GetCurrentResourceName() ~= this.scriptName then 
+        ThisScriptsScaleforms[scaleformName] = true 
+    end 
     local handle = exports.scaleforms:CallScaleformMovie(scaleformName) 
     local inputfunction = function(sfunc) PushScaleformMovieFunction(handle,sfunc) end
     cb(inputfunction,SendScaleformValues,PopScaleformMovieFunctionVoid,handle)
@@ -79,6 +81,9 @@ end
 Scaleforms.DrawScaleformMovie3DSpeical = function(scaleformName,ped,...) 
     exports.scaleforms:DrawScaleformMovie3DSpeical(scaleformName,ped,...) 
 end
+
+
+
 
 Scaleforms.GetTotal = function()
     return exports.scaleforms:GetTotal()
