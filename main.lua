@@ -98,7 +98,9 @@ end
 Scaleforms.main.EndScaleformMovie = function (scaleformName)
     if not Scaleforms.main.Handles[scaleformName] then 
     else 
+        SetScaleformMovieAsNoLongerNeeded(Scaleforms.main.Handles[scaleformName])
         Scaleforms.main.Handles[scaleformName] = nil
+       
     end 
 end
 Scaleforms.main.DrawScaleformMoviePosition = function (scaleformName,...)
@@ -335,6 +337,31 @@ exports('DrawScaleformMovieDuration', function (scaleformName,duration,...)
 end)
 exports('DrawScaleformMoviePosition', function (scaleformName,...)
     return Scaleforms.main.DrawScaleformMoviePosition(scaleformName,...)
+end)
+exports('DrawScaleformMovie3DSpeical', function (scaleformName,ped,...)
+    local case = {} --cfx-switchcase by negbook https://github.com/negbook/cfx-switchcase/blob/main/cfx-switchcase.lua
+    local default = {} --default must put after cases when use
+    local switch = setmetatable({},{__call=function(a,b)case=setmetatable({},{__call=function(a,...)return a[{...}]end,__index=function(a,c)local d=false;if c and type(c)=="table"then for e=1,#c do local f=c[e]if f and b and f==b then d=true;break end end end;if d then return setmetatable({},{__call=function(a,g)default=setmetatable({},{__call=function(a,h)end})g()end})else return function()end end end})default=setmetatable({},{__call=function(a,b)if b and type(b)=="function"then b()end end})return a[b]end,__index=function(a,f)return setmetatable({},{__call=function(a,...)end})end})
+    Threads.CreateLoopOnce("wtf",0,function()
+    local function IsUnknownPosition(pos)
+        if ((pos.x == 0.0  and  pos.y == 0.0)  and  pos.z == 0.0) then
+            return true;
+        end
+        return false;
+    end
+    local function CalcuAngle(fromPos, pos)
+
+        local temp = {};
+        if IsUnknownPosition(pos) then
+            return 0.0, 0.0, 0.0;
+        end
+        return vector3(0.0,0.0,(180.0 - GetHeadingFromVector_2d((pos.x - fromPos.x), (pos.y - fromPos.y))));
+    end
+    local fromCoords =  GetPedBoneCoords(ped, 24818, 0.8, 0.0,  0.0) ;
+    local toCoords = GetFinalRenderedCamCoord()
+	rot =  CalcuAngle(fromCoords,toCoords ) ;
+        DrawScaleformMovie_3dSolid(Scaleforms.main.Handles[scaleformName], fromCoords, rot, 0.75 , 0.5 , 0.375 , 0.75 , 0.5 , 0.375 , 2);
+    end)
 end)
 exports('GetTotal',function()
     return Scaleforms and Scaleforms.main and Scaleforms.main.counts or 0
