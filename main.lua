@@ -5,7 +5,6 @@ Scaleforms.main.Tasks = {}
 Scaleforms.main.Handles = {}
 Scaleforms.main.Kill = {}
 Scaleforms.main.ReleaseTimer = {}
-
 Scaleforms.debug = true 
 if Scaleforms.debug then 
 CreateThread(function()
@@ -15,7 +14,6 @@ CreateThread(function()
     end 
 end)
 end 
-
 --[=[
 --  TriggerEvent('CallScaleformMovie','TALK_MESSAGE',function(run,send,stop)  -- or function(run,send,stop,handle)
             run('SayToAll')
@@ -23,7 +21,6 @@ end
             stop()
     end )
 --]=]
-
 Scaleforms.main.CallScaleformMovie = function (scaleformName)
     if not Scaleforms.main.Handles[scaleformName] or not HasScaleformMovieLoaded(Scaleforms.main.Handles[scaleformName]) then 
         Threads.CreateLoad(scaleformName,RequestScaleformMovie,HasScaleformMovieLoaded,function(handle)
@@ -39,7 +36,6 @@ Scaleforms.main.CallScaleformMovie = function (scaleformName)
 end 
 Scaleforms.main.DrawScaleformMovie = function(scaleformName,...)
     if not Scaleforms.main.Handles[scaleformName] or not HasScaleformMovieLoaded(Scaleforms.main.Handles[scaleformName]) then 
-        
         error('Scaleforms:DrawScaleformMovie error,Please CallScaleformMovie first',2)
         return 
     else 
@@ -55,7 +51,6 @@ Scaleforms.main.DrawScaleformMovie = function(scaleformName,...)
                         Threads.KillActionOfLoop('scaleforms:draw:'..scaleformName);
                     end 
                 end 
-                
             end)
         elseif #ops == 1 then  
             Threads.CreateLoopOnce('scaleforms:draw:'..scaleformName,0,function()
@@ -89,14 +84,12 @@ local ops = {...}
     CreateThread(function()
         Scaleforms.main.DrawScaleformMovie(scaleformName,table.unpack(ops))
         Scaleforms.main.ReleaseTimer[scaleformName] = GetGameTimer() + duration
-        
         Threads.CreateLoopOnce("ScaleformDuration"..scaleformName,333,function()
             if GetGameTimer() >= Scaleforms.main.ReleaseTimer[scaleformName] then 
                 Scaleforms.main.EndScaleformMovie(scaleformName);
                 if type(cb) == 'function' then 
                     cb()
                 end 
-                
                 Threads.KillActionOfLoop("ScaleformDuration"..scaleformName,333);
             end 
         end)
@@ -106,32 +99,8 @@ Scaleforms.main.EndScaleformMovie = function (scaleformName)
     if not Scaleforms.main.Handles[scaleformName] then 
     else 
         Scaleforms.main.Handles[scaleformName] = nil
-        
-        
     end 
 end
-
-exports('CallScaleformMovie', function (scaleformName)
-    return Scaleforms.main.CallScaleformMovie(scaleformName)
-end)
-
-exports('DrawScaleformMovie', function (scaleformName,...)
-    Scaleforms.main.DrawScaleformMovie (scaleformName,...)
-end )
-
-exports('EndScaleformMovie', function (scaleformName)
-    Scaleforms.main.EndScaleformMovie (scaleformName)
-end )
-
-
-exports('DrawScaleformMovieDuration', function (scaleformName,duration,...)
-    return Scaleforms.main.DrawScaleformMovieDuration(scaleformName,duration,...)
-end)
-
-exports('DrawScaleformMoviePosition', function (scaleformName,...)
-    return Scaleforms.main.DrawScaleformMoviePosition(scaleformName,...)
-end)
-
 Scaleforms.main.DrawScaleformMoviePosition = function (scaleformName,...)
     if not Scaleforms.main.Handles[scaleformName] or not HasScaleformMovieLoaded(Scaleforms.main.Handles[scaleformName]) then 
         --[=[
@@ -169,24 +138,17 @@ local ops = {...}
     CreateThread(function()
         Scaleforms.main.DrawScaleformMoviePosition(scaleformName,table.unpack(ops))
         Scaleforms.main.ReleaseTimer[scaleformName] = GetGameTimer() + duration
-        
         Threads.CreateLoopOnce("ScaleformDuration3d"..scaleformName,333,function()
             if GetGameTimer() >= Scaleforms.main.ReleaseTimer[scaleformName] then 
                 Scaleforms.main.EndScaleformMovie(scaleformName);
                 if type(cb) == 'function' then 
                     cb()
                 end 
-                
                 Threads.KillActionOfLoop("ScaleformDuration3d"..scaleformName,333);
             end 
         end)
     end)
 end
-
-exports('DrawScaleformMoviePosition2', function (scaleformName,...)
-    return Scaleforms.main.DrawScaleformMoviePosition2(scaleformName,...)
-end )
-
 Scaleforms.main.DrawScaleformMoviePosition2 = function (scaleformName,...)
     if not Scaleforms.main.Handles[scaleformName] or not HasScaleformMovieLoaded(Scaleforms.main.Handles[scaleformName]) then 
         --[=[
@@ -217,7 +179,6 @@ Scaleforms.main.DrawScaleformMoviePosition2 = function (scaleformName,...)
         end 
     end 
 end 
-
 Scaleforms.main.DrawScaleformMoviePosition2Duration = function (scaleformName,duration,...)
 local ops = {...}
     local cb = ops[#ops]
@@ -225,27 +186,104 @@ local ops = {...}
     CreateThread(function()
         Scaleforms.main.DrawScaleformMoviePosition2(scaleformName,table.unpack(ops))
         Scaleforms.main.ReleaseTimer[scaleformName] = GetGameTimer() + duration
-        
         Threads.CreateLoopOnce("ScaleformDuration3d2"..scaleformName,333,function()
             if GetGameTimer() >= Scaleforms.main.ReleaseTimer[scaleformName] then 
                 Scaleforms.main.EndScaleformMovie(scaleformName);
                 if type(cb) == 'function' then 
                     cb()
                 end 
-                
                 Threads.KillActionOfLoop("ScaleformDuration3d2"..scaleformName,333);
             end 
         end)
     end)
 end
-
+exports('DrawScaleformMoviePosition2', function (scaleformName,...)
+    return Scaleforms.main.DrawScaleformMoviePosition2(scaleformName,...)
+end )
 exports('DrawScaleformMoviePositionDuration', function (scaleformName,duration,...)
     return Scaleforms.main.DrawScaleformMoviePositionDuration(scaleformName,duration,...)
 end)
 exports('DrawScaleformMoviePosition2Duration', function (scaleformName,duration,...)
     return Scaleforms.main.DrawScaleformMoviePosition2Duration(scaleformName,duration,...)
 end)
-
+exports('RequestScaleformCallbackBool', function(scaleformName,SfunctionName,...) 
+    if not Scaleforms.main.Handles[scaleformName] or not HasScaleformMovieLoaded(Scaleforms.main.Handles[scaleformName]) then 
+        Threads.CreateLoad(scaleformName,RequestScaleformMovie,HasScaleformMovieLoaded,function(handle)
+            Scaleforms.main.Handles[scaleformName] = handle
+        end)
+        local count = 0
+        for i,v in pairs(Scaleforms.main.Handles) do 
+            count = count + 1
+        end 
+        Scaleforms.main.counts = count
+    end 
+    BeginScaleformMovieMethod(Scaleforms.main.Handles[scaleformName],SfunctionName) --call function
+    local ops = {...}
+    local cb = ops[#ops]
+    table.remove(ops,#ops)
+    SendScaleformValues(...)
+    local b = EndScaleformMovieMethodReturnValue()
+    while true do 
+    if IsScaleformMovieMethodReturnValueReady(b) then 
+       local c = GetScaleformMovieMethodReturnValueBool(b)  --output
+       cb(c)
+       break 
+    end 
+    Citizen.Wait(0)
+    end
+end )
+exports('RequestScaleformCallbackInt', function(scaleformName,SfunctionName,...) 
+    if not Scaleforms.main.Handles[scaleformName] or not HasScaleformMovieLoaded(Scaleforms.main.Handles[scaleformName]) then 
+        Threads.CreateLoad(scaleformName,RequestScaleformMovie,HasScaleformMovieLoaded,function(handle)
+            Scaleforms.main.Handles[scaleformName] = handle
+        end)
+        local count = 0
+        for i,v in pairs(Scaleforms.main.Handles) do 
+            count = count + 1
+        end 
+        Scaleforms.main.counts = count
+    end 
+    BeginScaleformMovieMethod(Scaleforms.main.Handles[scaleformName],SfunctionName) --call function
+    local ops = {...}
+    local cb = ops[#ops]
+    table.remove(ops,#ops)
+    SendScaleformValues(...)
+    local b = EndScaleformMovieMethodReturnValue()
+    while true do 
+    if IsScaleformMovieMethodReturnValueReady(b) then 
+       local c = GetScaleformMovieMethodReturnValueInt(b)  --output
+       cb(c)
+       break 
+    end 
+    Citizen.Wait(0)
+    end
+end )
+exports('RequestScaleformCallbackString', function (scaleformName,SfunctionName,...) 
+    if not Scaleforms.main.Handles[scaleformName] or not HasScaleformMovieLoaded(Scaleforms.main.Handles[scaleformName]) then 
+        Threads.CreateLoad(scaleformName,RequestScaleformMovie,HasScaleformMovieLoaded,function(handle)
+            Scaleforms.main.Handles[scaleformName] = handle
+        end)
+        local count = 0
+        for i,v in pairs(Scaleforms.main.Handles) do 
+            count = count + 1
+        end 
+        Scaleforms.main.counts = count
+    end 
+    BeginScaleformMovieMethod(Scaleforms.main.Handles[scaleformName],SfunctionName) --call function
+    local ops = {...}
+    local cb = ops[#ops]
+    table.remove(ops,#ops)
+    SendScaleformValues(...)
+    local b = EndScaleformMovieMethodReturnValue()
+    while true do 
+    if IsScaleformMovieMethodReturnValueReady(b) then 
+       local c = GetScaleformMovieMethodReturnValueString(b)  --output
+       cb(c)
+       break 
+    end 
+    Citizen.Wait(0)
+    end
+end )
 exports('RequestScaleformCallbackAny', function (scaleformName,SfunctionName,...) 
     if not Scaleforms.main.Handles[scaleformName] or not HasScaleformMovieLoaded(Scaleforms.main.Handles[scaleformName]) then 
         Threads.CreateLoad(scaleformName,RequestScaleformMovie,HasScaleformMovieLoaded,function(handle)
@@ -282,96 +320,22 @@ exports('RequestScaleformCallbackAny', function (scaleformName,SfunctionName,...
         cb(returnBool)
         return 
     end)
-    
 end )
-
-
-exports('RequestScaleformCallbackString', function (scaleformName,SfunctionName,...) 
-    if not Scaleforms.main.Handles[scaleformName] or not HasScaleformMovieLoaded(Scaleforms.main.Handles[scaleformName]) then 
-        Threads.CreateLoad(scaleformName,RequestScaleformMovie,HasScaleformMovieLoaded,function(handle)
-            Scaleforms.main.Handles[scaleformName] = handle
-        end)
-        local count = 0
-        for i,v in pairs(Scaleforms.main.Handles) do 
-            count = count + 1
-        end 
-        Scaleforms.main.counts = count
-    end 
-    BeginScaleformMovieMethod(Scaleforms.main.Handles[scaleformName],SfunctionName) --call function
-    local ops = {...}
-    local cb = ops[#ops]
-    table.remove(ops,#ops)
-    SendScaleformValues(...)
-    local b = EndScaleformMovieMethodReturnValue()
-    while true do 
-    if IsScaleformMovieMethodReturnValueReady(b) then 
-       local c = GetScaleformMovieMethodReturnValueString(b)  --output
-       cb(c)
-       break 
-    end 
-    Citizen.Wait(0)
-    end
+exports('CallScaleformMovie', function (scaleformName)
+    return Scaleforms.main.CallScaleformMovie(scaleformName)
+end)
+exports('DrawScaleformMovie', function (scaleformName,...)
+    Scaleforms.main.DrawScaleformMovie (scaleformName,...)
 end )
-
-
-
-exports('RequestScaleformCallbackInt', function(scaleformName,SfunctionName,...) 
-    if not Scaleforms.main.Handles[scaleformName] or not HasScaleformMovieLoaded(Scaleforms.main.Handles[scaleformName]) then 
-        Threads.CreateLoad(scaleformName,RequestScaleformMovie,HasScaleformMovieLoaded,function(handle)
-            Scaleforms.main.Handles[scaleformName] = handle
-        end)
-        local count = 0
-        for i,v in pairs(Scaleforms.main.Handles) do 
-            count = count + 1
-        end 
-        Scaleforms.main.counts = count
-    end 
-    BeginScaleformMovieMethod(Scaleforms.main.Handles[scaleformName],SfunctionName) --call function
-    local ops = {...}
-    local cb = ops[#ops]
-    table.remove(ops,#ops)
-    SendScaleformValues(...)
-    local b = EndScaleformMovieMethodReturnValue()
-    while true do 
-    if IsScaleformMovieMethodReturnValueReady(b) then 
-       local c = GetScaleformMovieMethodReturnValueInt(b)  --output
-       cb(c)
-       break 
-    end 
-    Citizen.Wait(0)
-    end
+exports('EndScaleformMovie', function (scaleformName)
+    Scaleforms.main.EndScaleformMovie (scaleformName)
 end )
-
-
-exports('RequestScaleformCallbackBool', function(scaleformName,SfunctionName,...) 
-    if not Scaleforms.main.Handles[scaleformName] or not HasScaleformMovieLoaded(Scaleforms.main.Handles[scaleformName]) then 
-        Threads.CreateLoad(scaleformName,RequestScaleformMovie,HasScaleformMovieLoaded,function(handle)
-            Scaleforms.main.Handles[scaleformName] = handle
-        end)
-        local count = 0
-        for i,v in pairs(Scaleforms.main.Handles) do 
-            count = count + 1
-        end 
-        Scaleforms.main.counts = count
-    end 
-    BeginScaleformMovieMethod(Scaleforms.main.Handles[scaleformName],SfunctionName) --call function
-    local ops = {...}
-    local cb = ops[#ops]
-    table.remove(ops,#ops)
-    SendScaleformValues(...)
-    local b = EndScaleformMovieMethodReturnValue()
-    while true do 
-    if IsScaleformMovieMethodReturnValueReady(b) then 
-       local c = GetScaleformMovieMethodReturnValueBool(b)  --output
-       cb(c)
-       break 
-    end 
-    Citizen.Wait(0)
-    end
-end )
-
-
+exports('DrawScaleformMovieDuration', function (scaleformName,duration,...)
+    return Scaleforms.main.DrawScaleformMovieDuration(scaleformName,duration,...)
+end)
+exports('DrawScaleformMoviePosition', function (scaleformName,...)
+    return Scaleforms.main.DrawScaleformMoviePosition(scaleformName,...)
+end)
 exports('GetTotal',function()
     return Scaleforms and Scaleforms.main and Scaleforms.main.counts or 0
 end)
-
