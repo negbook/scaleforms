@@ -26,7 +26,7 @@ AddEventHandler('onResourceStop', function(resourceName)
   if (GetCurrentResourceName() ~= resourceName) then
     return
   end
-  print(this.scriptName,resourceName,GetCurrentResourceName() ,ThisScriptsScaleforms)
+  --print(this.scriptName,resourceName,GetCurrentResourceName() ,ThisScriptsScaleforms)
   --print('The resource ' .. resourceName .. ' was stopped.')
   if resourceName ~= this.scriptName then 
       for i,v in pairs( ThisScriptsScaleforms ) do 
