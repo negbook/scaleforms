@@ -38,36 +38,46 @@ Scaleforms.main.CallScaleformMovie = function (scaleformName)
     return Scaleforms.main.Handles[scaleformName]
 end 
 Scaleforms.main.DrawScaleformMovie = function(scaleformName,...)
-if not Scaleforms.main.Handles[scaleformName] or not HasScaleformMovieLoaded(Scaleforms.main.Handles[scaleformName]) then 
-        --[=[
-        Threads.CreateLoad(scaleformName,RequestScaleformMovie,HasScaleformMovieLoaded,function(handle)
-            Scaleforms.main.Handles[scaleformName] = handle
-        end)
-        local count = 0
-        for i,v in pairs(Scaleforms.main.Handles) do 
-            count = count + 1
-        end 
-        Scaleforms.main.counts = count
-        --]=]
+    if not Scaleforms.main.Handles[scaleformName] or not HasScaleformMovieLoaded(Scaleforms.main.Handles[scaleformName]) then 
+        
         error('Scaleforms:DrawScaleformMovie error,Please CallScaleformMovie first',2)
         return 
     else 
         local ops = {...}
         if #ops > 1 then 
             Threads.CreateLoopOnce('scaleforms:draw:'..scaleformName,0,function()
-                SetScriptGfxDrawOrder(ops[#ops])
-                DrawScaleformMovie(Scaleforms.main.Handles[scaleformName], table.unpack(ops))
-                ResetScriptGfxAlign()
+                if Scaleforms.main.Handles[scaleformName] then 
+                    SetScriptGfxDrawOrder(ops[#ops])
+                    DrawScaleformMovie(Scaleforms.main.Handles[scaleformName], table.unpack(ops))
+                    ResetScriptGfxAlign()
+                else 
+                    if Threads.IsActionOfLoopAlive('scaleforms:draw:'..scaleformName) then 
+                        Threads.KillActionOfLoop('scaleforms:draw:'..scaleformName);
+                    end 
+                end 
+                
             end)
         elseif #ops == 1 then  
             Threads.CreateLoopOnce('scaleforms:draw:'..scaleformName,0,function()
-                SetScriptGfxDrawOrder(ops[1])
-                DrawScaleformMovieFullscreen(Scaleforms.main.Handles[scaleformName])
-                ResetScriptGfxAlign()
+                if Scaleforms.main.Handles[scaleformName] then 
+                    SetScriptGfxDrawOrder(ops[1])
+                    DrawScaleformMovieFullscreen(Scaleforms.main.Handles[scaleformName])
+                    ResetScriptGfxAlign()
+                else 
+                    if Threads.IsActionOfLoopAlive('scaleforms:draw:'..scaleformName) then 
+                        Threads.KillActionOfLoop('scaleforms:draw:'..scaleformName);
+                    end 
+                end 
             end)
         else
             Threads.CreateLoopOnce('scaleforms:draw:'..scaleformName,0,function()
-                DrawScaleformMovieFullscreen(Scaleforms.main.Handles[scaleformName])
+                if Scaleforms.main.Handles[scaleformName] then 
+                    DrawScaleformMovieFullscreen(Scaleforms.main.Handles[scaleformName])
+                else 
+                    if Threads.IsActionOfLoopAlive('scaleforms:draw:'..scaleformName) then 
+                        Threads.KillActionOfLoop('scaleforms:draw:'..scaleformName);
+                    end 
+                end 
             end)
         end 
     end 
@@ -82,7 +92,7 @@ local ops = {...}
         
         Threads.CreateLoopOnce("ScaleformDuration"..scaleformName,333,function()
             if GetGameTimer() >= Scaleforms.main.ReleaseTimer[scaleformName] then 
-                Scaleforms.main.KillScaleformMovie(scaleformName);
+                Scaleforms.main.EndScaleformMovie(scaleformName);
                 if type(cb) == 'function' then 
                     cb()
                 end 
@@ -95,7 +105,9 @@ end
 Scaleforms.main.EndScaleformMovie = function (scaleformName)
     if not Scaleforms.main.Handles[scaleformName] then 
     else 
-        Threads.KillActionOfLoop('scaleforms:draw:'..scaleformName,333);
+        Scaleforms.main.Handles[scaleformName] = nil
+        
+        
     end 
 end
 
@@ -116,8 +128,123 @@ exports('DrawScaleformMovieDuration', function (scaleformName,duration,...)
     return Scaleforms.main.DrawScaleformMovieDuration(scaleformName,duration,...)
 end)
 
+exports('DrawScaleformMoviePosition', function (scaleformName,...)
+    return Scaleforms.main.DrawScaleformMoviePosition(scaleformName,...)
+end)
 
+Scaleforms.main.DrawScaleformMoviePosition = function (scaleformName,...)
+    if not Scaleforms.main.Handles[scaleformName] or not HasScaleformMovieLoaded(Scaleforms.main.Handles[scaleformName]) then 
+        --[=[
+        Scaleforms.main.Handles[scaleformName] = RequestScaleformMovie(scaleformName)
+        while not HasScaleformMovieLoaded(Scaleforms.main.Handles[scaleformName]) do 
+            Wait(0)
+        end 
+        local count = 0
+        for i,v in pairs(Scaleforms.main.Handles) do 
+            count = count + 1
+        end 
+        Scaleforms.counts = count
+        --]=]
+        error('Scaleforms:DrawScaleformMoviePosition error,Please CallScaleformMovie first',2)
+        return 
+    else
+        local ops = {...}
+        if #ops > 0 then 
+            Threads.CreateLoopOnce('scaleforms3d:draw'..scaleformName,0,function()
+                if Scaleforms.main.Handles[scaleformName] then 
+                    DrawScaleformMovie_3d(Scaleforms.main.Handles[scaleformName], table.unpack(ops))
+                else 
+                    if Threads.IsActionOfLoopAlive("scaleforms3d:draw"..scaleformName) then 
+                        Threads.KillActionOfLoop("scaleforms3d:draw"..scaleformName);
+                    end 
+                end 
+            end)
+        end 
+    end 
+end 
+Scaleforms.main.DrawScaleformMoviePositionDuration = function (scaleformName,duration,...)
+local ops = {...}
+    local cb = ops[#ops]
+    table.remove(ops,#ops)
+    CreateThread(function()
+        Scaleforms.main.DrawScaleformMoviePosition(scaleformName,table.unpack(ops))
+        Scaleforms.main.ReleaseTimer[scaleformName] = GetGameTimer() + duration
+        
+        Threads.CreateLoopOnce("ScaleformDuration3d"..scaleformName,333,function()
+            if GetGameTimer() >= Scaleforms.main.ReleaseTimer[scaleformName] then 
+                Scaleforms.main.EndScaleformMovie(scaleformName);
+                if type(cb) == 'function' then 
+                    cb()
+                end 
+                
+                Threads.KillActionOfLoop("ScaleformDuration3d"..scaleformName,333);
+            end 
+        end)
+    end)
+end
 
+exports('DrawScaleformMoviePosition2', function (scaleformName,...)
+    return Scaleforms.main.DrawScaleformMoviePosition2(scaleformName,...)
+end )
+
+Scaleforms.main.DrawScaleformMoviePosition2 = function (scaleformName,...)
+    if not Scaleforms.main.Handles[scaleformName] or not HasScaleformMovieLoaded(Scaleforms.main.Handles[scaleformName]) then 
+        --[=[
+        Scaleforms.main.Handles[scaleformName] = RequestScaleformMovie(scaleformName)
+        while not HasScaleformMovieLoaded(Scaleforms.main.Handles[scaleformName]) do 
+            Wait(0)
+        end 
+        local count = 0
+        for i,v in pairs(Scaleforms.main.Handles) do 
+            count = count + 1
+        end 
+        Scaleforms.counts = count
+        --]=]
+        error('Scaleforms:DrawScaleformMoviePosition2 error,Please CallScaleformMovie first',2)
+        return 
+    else
+        local ops = {...}
+        if #ops > 0 then 
+            Threads.CreateLoopOnce('scaleforms3d2:draw'..scaleformName,0,function()
+                if Scaleforms.main.Handles[scaleformName] then 
+                    DrawScaleformMovie_3dSolid(Scaleforms.main.Handles[scaleformName], table.unpack(ops))
+                else 
+                    if Threads.IsActionOfLoopAlive("scaleforms3d2:draw"..scaleformName) then 
+                        Threads.KillActionOfLoop("scaleforms3d2:draw"..scaleformName);
+                    end 
+                end 
+            end)
+        end 
+    end 
+end 
+
+Scaleforms.main.DrawScaleformMoviePosition2Duration = function (scaleformName,duration,...)
+local ops = {...}
+    local cb = ops[#ops]
+    table.remove(ops,#ops)
+    CreateThread(function()
+        Scaleforms.main.DrawScaleformMoviePosition2(scaleformName,table.unpack(ops))
+        Scaleforms.main.ReleaseTimer[scaleformName] = GetGameTimer() + duration
+        
+        Threads.CreateLoopOnce("ScaleformDuration3d2"..scaleformName,333,function()
+            if GetGameTimer() >= Scaleforms.main.ReleaseTimer[scaleformName] then 
+                Scaleforms.main.EndScaleformMovie(scaleformName);
+                if type(cb) == 'function' then 
+                    cb()
+                end 
+                
+                Threads.KillActionOfLoop("ScaleformDuration3d2"..scaleformName,333);
+            end 
+        end)
+    end)
+end
+
+exports('DrawScaleformMoviePositionDuration', function (scaleformName,duration,...)
+    return Scaleforms.main.DrawScaleformMoviePositionDuration(scaleformName,duration,...)
+end)
+exports('DrawScaleformMoviePosition2Duration', function (scaleformName,duration,...)
+    return Scaleforms.main.DrawScaleformMoviePosition2Duration(scaleformName,duration,...)
+end)
 
 exports('RequestScaleformCallbackAny', function (scaleformName,SfunctionName,...) 
     if not Scaleforms.main.Handles[scaleformName] or not HasScaleformMovieLoaded(Scaleforms.main.Handles[scaleformName]) then 
