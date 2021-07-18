@@ -23,6 +23,7 @@ end
 --]=]
 local loadScaleform = function(scaleformName)
     local loaded = false 
+    if HasScaleformMovieLoaded(Scaleforms.main.Handles[scaleformName]) then return Scaleforms.main.Handles[scaleformName] end 
     Threads.CreateLoad(scaleformName,RequestScaleformMovie,HasScaleformMovieLoaded,function(handle)
         Scaleforms.main.Handles[scaleformName] = handle
         local count = 0
