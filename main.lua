@@ -21,24 +21,32 @@ end
             stop()
     end )
 --]=]
-Scaleforms.main.CallScaleformMovie = function (scaleformName)
-    if not Scaleforms.main.Handles[scaleformName] or not HasScaleformMovieLoaded(Scaleforms.main.Handles[scaleformName]) then 
-        Threads.CreateLoad(scaleformName,RequestScaleformMovie,HasScaleformMovieLoaded,function(handle)
-            Scaleforms.main.Handles[scaleformName] = handle
-        end)
+local loadScaleform = function(scaleformName)
+    local loaded = false 
+    Threads.CreateLoad(scaleformName,RequestScaleformMovie,HasScaleformMovieLoaded,function(handle)
+        Scaleforms.main.Handles[scaleformName] = handle
         local count = 0
         for i,v in pairs(Scaleforms.main.Handles) do 
             count = count + 1
         end 
         Scaleforms.main.counts = count
+        loaded = Scaleforms.main.Handles[scaleformName]
+    end)
+    while not loaded do Wait(0)
+    
+    end 
+    return loaded
+end 
+Scaleforms.main.CallScaleformMovie = function (scaleformName)
+    if not Scaleforms.main.Handles[scaleformName] or not HasScaleformMovieLoaded(Scaleforms.main.Handles[scaleformName]) then 
+        loadScaleform(scaleformName)
     end 
     return Scaleforms.main.Handles[scaleformName]
 end 
 Scaleforms.main.DrawScaleformMovie = function(scaleformName,...)
     if not Scaleforms.main.Handles[scaleformName] or not HasScaleformMovieLoaded(Scaleforms.main.Handles[scaleformName]) then 
-        error('Scaleforms:DrawScaleformMovie error,Please CallScaleformMovie first',2)
-        return 
-    else 
+        loadScaleform(scaleformName)
+    end 
         local ops = {...}
         if #ops > 1 then 
             Threads.CreateLoopOnce('scaleforms:draw:'..scaleformName,0,function()
@@ -75,7 +83,7 @@ Scaleforms.main.DrawScaleformMovie = function(scaleformName,...)
                 end 
             end)
         end 
-    end 
+     
 end 
 Scaleforms.main.DrawScaleformMovieDuration = function (scaleformName,duration,...)
 local ops = {...}
@@ -116,9 +124,8 @@ Scaleforms.main.DrawScaleformMoviePosition = function (scaleformName,...)
         end 
         Scaleforms.counts = count
         --]=]
-        error('Scaleforms:DrawScaleformMoviePosition error,Please CallScaleformMovie first',2)
-        return 
-    else
+        loadScaleform(scaleformName)
+    end 
         local ops = {...}
         if #ops > 0 then 
             Threads.CreateLoopOnce('scaleforms3d:draw'..scaleformName,0,function()
@@ -131,7 +138,7 @@ Scaleforms.main.DrawScaleformMoviePosition = function (scaleformName,...)
                 end 
             end)
         end 
-    end 
+     
 end 
 Scaleforms.main.DrawScaleformMoviePositionDuration = function (scaleformName,duration,...)
 local ops = {...}
@@ -164,9 +171,8 @@ Scaleforms.main.DrawScaleformMoviePosition2 = function (scaleformName,...)
         end 
         Scaleforms.counts = count
         --]=]
-        error('Scaleforms:DrawScaleformMoviePosition2 error,Please CallScaleformMovie first',2)
-        return 
-    else
+        loadScaleform(scaleformName)
+    end 
         local ops = {...}
         if #ops > 0 then 
             Threads.CreateLoopOnce('scaleforms3d2:draw'..scaleformName,0,function()
@@ -179,7 +185,7 @@ Scaleforms.main.DrawScaleformMoviePosition2 = function (scaleformName,...)
                 end 
             end)
         end 
-    end 
+     
 end 
 Scaleforms.main.DrawScaleformMoviePosition2Duration = function (scaleformName,duration,...)
 local ops = {...}
@@ -363,6 +369,7 @@ exports('DrawScaleformMovie3DSpeical', function (scaleformName,ped,...)
         DrawScaleformMovie_3dSolid(Scaleforms.main.Handles[scaleformName], fromCoords, rot, 0.75 , 0.5 , 0.375 , 0.75 , 0.5 , 0.375 , 2);
     end)
 end)
+
 exports('GetTotal',function()
     return Scaleforms and Scaleforms.main and Scaleforms.main.counts or 0
 end)
