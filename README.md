@@ -1,6 +1,6 @@
 # fxserver-scaleforms
-Scaleforms utilities for FXServer
-
+Scaleforms utilities for FXServer[outdated]
+# Scaleforms is included in latest [Threads](https://github.com/negbook/threads) 
 
 
 [DEPENDENCIES]
